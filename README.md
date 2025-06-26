@@ -12,4 +12,9 @@ this is a new attempt at the todo app project within the odin project.
 - separating elements into different modules
 - separating logic and dom elements
 - proper git branch management between /main and /testing branches
+
+  resources ref:-
+
+  -https://fontawesome.com
+  -https://www.cssmatic.com/box-shadow
   
