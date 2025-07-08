@@ -1,10 +1,34 @@
-//import { Project } from "./modules/Project";
-//import { Task } from "./modules/Todo.";
 
+import { Task } from "./Todo";
+import { Project } from "./Project";
 class ProjectManager{
+    
+    #projects = [];
+    tasks = [];
     constructor(){
-        this.Projects = [];
-        this.tasks =[];
+        
+        
+    }
+    //project C.R.U.D
+    addProject(projectName){
+        const projectObject = new Project(projectName);
+        this.#projects.push(projectObject);
+        console.log(`current projects:`);
+        console.log(`${projectObject}`);
+    }
+    // task C.R.U.D
+    addTask(task){
+        this.tasks.push(task);
+        console.log(`current tasks:`);
+        console.log(`${this.tasks}`);
+    }
+
+    viewAllTasks(project){
+        console.log(`Current tasks in project ${project.projectName}`)
+        tasks.forEach(task => {
+            
+            console.log(task.title)
+        });
     }
 }
 
@@ -20,3 +44,14 @@ class ProjectManager{
 export{
     ProjectManager,
 }
+
+
+/*demo tasks */
+//const todoOne = new Task(`pay bank`,'', `28-06-2025`, '', '');
+//const todoTwo = new Task(`walk dog`,'', `28-06-2025`, '', '');
+//const todoThree = new Task(`go to birthday`,'', `28-06-2025`, '', '');
+//const todoFour = new Task(`fix toilet`,'', `28-06-2025`, '', '');
+
+
+/*demo project manager */
+
