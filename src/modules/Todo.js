@@ -13,7 +13,7 @@ class Task{
         console.log(`title: ${title}\ninfo: ${info}\ndue date: ${dueDate}\npriority: ${priority}\nproject linked: ${projectId}`)
     }
     static #generateId(){
-        return Task.#id++;
+        return Taskstat.#id++;
     }
 }
 

@@ -1,7 +1,7 @@
 
 class Project{
     static #id = 0;
-    #taskList = [];
+    taskList = [];
     constructor(projectName){
         projectName = this.projectName
         Project.#generateId();
