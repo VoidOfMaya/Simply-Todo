@@ -1,15 +1,26 @@
 
 class Project{
     static #id = 0;
+    #projectId;
     taskList = [];
     constructor(projectName){
-        projectName = this.projectName
-        Project.#generateId();
-        console.log(`id number: ${Project.#id}`);
+        this.projectName = projectName
+        this.#projectId = Project.#generateId();
+        console.log(`id number: ${this.#projectId}`);
     }
 
     static #generateId(){
         return Project.#id++;
+    }
+    toJSON(){
+        return{
+            ID : this.#projectId,
+            name: this.projectName,
+            tasks: this.taskList
+        };
+    }
+    JSONFormat(){
+        return JSON.stringify(this.toJSON());
     }
 }
 export {

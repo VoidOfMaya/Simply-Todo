@@ -3,17 +3,33 @@
 
 class Task{
     static #id = 0;
+    #taskId;
+
     constructor(title, info, dueDate,priority , projectId){
         this.title = title;
         this.info = info;
         this.dueDate = dueDate;
         this.priority = priority;
         this.projectId = projectId;
-        Task.#generateId();
-        console.log(`title: ${title}\ninfo: ${info}\ndue date: ${dueDate}\npriority: ${priority}\nproject linked: ${projectId}`)
+        this.#taskId = Task.#generateId();
+        //console.log(`title: ${title}\ninfo: ${info}\ndue date: ${dueDate}\npriority: ${priority}\nproject linked: ${projectId}`)
     }
     static #generateId(){
-        return Taskstat.#id++;
+        return Task.#id++;
+    }
+    toJSON(){
+        return{
+            ID : this.#taskId,
+            name: this.title,
+            info:this.info,
+            dueDate: this.dueDate,
+            priority: this.priority,
+            projectId: this.projectId
+
+        };
+    }
+    JSONFormat(){
+        return JSON.stringify(this.toJSON());
     }
 }
 

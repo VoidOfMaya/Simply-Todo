@@ -4,31 +4,30 @@ import { Project } from "./Project";
 class ProjectManager{
     
     #projects = [];
-    tasks = [];
+    tasksList = [];
     constructor(){
         
         
     }
     //project C.R.U.D
     addProject(projectName){
-        const projectObject = new Project(projectName);
-        this.#projects.push(projectObject);
-        console.log(`current projects:`);
-        console.log(`${projectObject}`);
+        const newProject = new Project(projectName);
+        this.#projects.push(newProject.JSONFormat());
+        
     }
     // task C.R.U.D
-    addTask(task){
-        this.tasks.push(task);
-        console.log(`current tasks:`);
-        console.log(`${this.tasks}`);
-    }
+    addTask(name, info, date, priority, projID){
+        const newTask = new Task(name, info, date, priority, projID);
+        this.tasksList.push(newTask.JSONFormat());
 
-    viewAllTasks(project){
-        console.log(`Current tasks in project ${project.projectName}`)
-        tasks.forEach(task => {
-            
-            console.log(task.title)
-        });
+    }
+    showProjects(){
+        console.log(`current projects:`);
+        console.log(this.#projects);
+    }
+    showTasks(){
+        console.log(`current Tasks:`);
+        console.log(this.tasksList);
     }
 }
 
