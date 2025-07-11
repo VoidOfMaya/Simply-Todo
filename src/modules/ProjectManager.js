@@ -19,15 +19,41 @@ class ProjectManager{
     addTask(name, info, date, priority, projID){
         const newTask = new Task(name, info, date, priority, projID);
         this.tasksList.push(newTask.JSONFormat());
+    }
+
+    alocateTasks(taskId, projectId){
+        console.log(`testing task management function`)
+
+        this.#projects.forEach((project)=>{
+            const projectObj = JSON.parse(project);
+            const currnetTasklist = projectObj.tasks;
+
+            if(projectObj.ID === projectId){
+                console.log(`found project: ${projectObj.name}`);
+                this.tasksList.forEach((task)=>{
+                    const taskObj = JSON.parse(task);
+                    if(taskObj.ID === taskId){
+                        console.log(`assigning task: ${taskObj.name} to ${projectObj.name}`)
+                        currnetTasklist.push(taskObj);
+                        this.#projects[projectObj.ID] = JSON.stringify(projectObj);
+                        console.log(`current project: \n${this.#projects[projectObj.ID]}`)
+                    
+                    }
+                })
+            }
+        })
 
     }
+    
+
+    /*display items  */
     showProjects(){
         console.log(`current projects:`);
         console.log(this.#projects);
     }
     showTasks(){
         console.log(`current Tasks:`);
-        console.log(this.tasksList);
+        console.log(this.tasksList)
     }
 }
 

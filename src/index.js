@@ -19,5 +19,6 @@ projectHandler.addTask(`pay bank`,'', `28-06-2025`, '', '');
 projectHandler.addTask(`walk dog`,'', `28-06-2025`, '', '');
 projectHandler.addTask(`go to birthday`,'', `28-06-2025`, '', '');
 projectHandler.addTask(`fix toilet`,'', `28-06-2025`, '', '');
-projectHandler.showTasks();
+//projectHandler.showTasks();
 
+projectHandler.alocateTasks(1, 2);
