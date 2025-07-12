@@ -1,4 +1,4 @@
-class storage{
+class Storage{
     constructor(){}
 
     load(key){
@@ -19,4 +19,4 @@ class storage{
 
 }
 
-export{storage,}
+export{Storage,}

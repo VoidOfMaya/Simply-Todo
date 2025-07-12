@@ -1,11 +1,11 @@
 
 class Project{
     static #id = 0;
-    #projectId;
+    Id;
     taskList = [];
     constructor(projectName){
         this.projectName = projectName
-        this.#projectId = Project.#generateId();
+        this.Id = Project.#generateId();
     }
 
     static #generateId(){
@@ -13,7 +13,7 @@ class Project{
     }
     toJSON(){
         return{
-            ID : this.#projectId,
+            ID : this.Id,
             name: this.projectName,
             tasks: this.taskList
         };
