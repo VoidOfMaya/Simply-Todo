@@ -6,7 +6,6 @@ class Project{
     constructor(projectName){
         this.projectName = projectName
         this.#projectId = Project.#generateId();
-        console.log(`id number: ${this.#projectId}`);
     }
 
     static #generateId(){
