@@ -2,9 +2,18 @@
 import { Task } from "./Todo";
 import { Project } from "./Project";
 import { Storage } from "./Storage";
+
+/* what this does:
+-single resposibility: sort tasks to their respective projcects
+-gets projects 
+-inputs created projects to local storage
+-gets tasks
+-inputs created tasks into projects within local storage
+*/
+
 class ProjectManager{
     
-    #projects = [];
+    //#projects = [];
     tasksList = [];
     data = new Storage();
     constructor(){
@@ -12,82 +21,75 @@ class ProjectManager{
         
     }
     //project C.R.U.D
+    //create
     addProject(projectName){
         const newProject = new Project(projectName);
         //this.#projects.push(newProject.JSONFormat());
         this.data.save(newProject.Id, newProject.JSONFormat());
         
     }
+    //read
+    readProject(id){
+        const project = JSON.parse(this.data.load(id));
+        const printTasks =()=> {
+            project.tasks.forEach(task => {
+                console.log(`task id: ${task.ID}\ntask name: ${task.name}\ntask due date: ${task.dueDate}\ntask priority: ${task.priority}\n`);
+                console.log(`task info: ${task.info}\n`);
+                
+            });
+            
+        }
+        console.log(`Project id: ${project.ID}\nProject name: ${project.name}\n`);
+        printTasks();
+    }
+
+    //update
+    //delete
+
+
     // task C.R.U.D
+    //create
     addTask(name, info, date, priority, projID){
         const newTask = new Task(name, info, date, priority, projID);
         this.tasksList.push(newTask);
     }
 
     alocateTasks(taskId, projectId){
-        console.log(`testing task management function`)
+        //console.log(`testing task management function`)
         const selectedProject = JSON.parse(this.data.load(projectId))
         const projectTask = selectedProject.tasks;
-        console.log(this.tasksList[taskId]);
+        //console.log(selectedProject);
         projectTask.push(this.tasksList[taskId]);
         this.data.save(projectId,JSON.stringify(selectedProject));
-
-
-
-        /*selectedProject.forEach((project)=>{
-            const projectObj = JSON.parse(project);
-            
-            const currnetTasklist = projectObj.tasks;
-
-            if(projectObj.ID === projectId){
-                console.log(`found project: ${projectObj.name}`);
-                this.tasksList.forEach((task)=>{
-                    const taskObj = JSON.parse(task);
-                    if(taskObj.ID === taskId){
-                        console.log(`assigning task: ${taskObj.name} to ${projectObj.name}`)
-                        currnetTasklist.push(taskObj);
-                        this.#projects[projectObj.ID] = JSON.stringify(projectObj);
-                        console.log(`current project: \n${this.#projects[projectObj.ID]}`)
-                    
-                    }
-                })
-            } 
-        })*/
-
     }
+    //read
+    //update
+    //delete
     
 
-    /*display items  */
+    /*display items from storage */
     showProjects(){
-        console.log(`current projects:`);
-        console.log(this.#projects);
+        console.log(`current projects in storage:`);
+        for (let i = 0; i < localStorage.length; i++) {
+            const results = JSON.parse(localStorage.getItem(i));
+            console.log(results);
+        }
+        console.log(localStorage.getItem(1))
     }
     showTasks(){
-        console.log(`current Tasks:`);
-        console.log(this.tasksList)
+        console.log(`current Tasks in memory:`);
+        console.log(this.tasksList);
+        console.log(`current Tasks in storage:`);
+        for(let i = 0; i < localStorage.length; i++){
+            const currentLoad = JSON.parse(localStorage.getItem(i));
+            console.log(currentLoad.tasks)
+        }
     }
 }
 
-/* what this does:
--single resposibility: sort tasks to their respective projcects
--gets projects 
--inputs them to an array
--gets tasks
--inputs them to an array
--sort a new array using the commom project id for each project and  task
--spit out array for each project with an array of tasks
-*/
+
 export{
     ProjectManager,
 }
 
-
-/*demo tasks */
-//const todoOne = new Task(`pay bank`,'', `28-06-2025`, '', '');
-//const todoTwo = new Task(`walk dog`,'', `28-06-2025`, '', '');
-//const todoThree = new Task(`go to birthday`,'', `28-06-2025`, '', '');
-//const todoFour = new Task(`fix toilet`,'', `28-06-2025`, '', '');
-
-
-/*demo project manager */
 

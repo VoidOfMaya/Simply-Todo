@@ -16,6 +16,7 @@ class Storage{
             localStorage.removeItem(i);
         }
     };
+    
 
 }
 
