@@ -2,10 +2,11 @@ class Storage{
     constructor(){}
 
     load(key){
-        return localStorage.getItem(key);
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
     };
     save(key,data){
-        localStorage.setItem(key, data);
+        localStorage.setItem(key, JSON.stringify(data));
     };
     delet(key){
         localStorage.removeItem(key);

@@ -24,12 +24,27 @@ class ProjectManager{
     //create
     addProject(projectName){
         const newProject = new Project(projectName);
-        //this.#projects.push(newProject.JSONFormat());
-        this.data.save(newProject.Id, newProject.JSONFormat());
+        const projectData = newProject;
+        let projArray =this.data.load("proj");
+        if( !Array.isArray(projArray)){
+            projArray = [];
+        }
+        projArray.push(projectData);
+        this.data.save("proj", projArray)
+        console.log(`saved project array: ${projArray}`);
+        
         
     }
     //read
     readProject(id){
+        //const projArray = JSON.parse(this.data.load("proj"))
+
+        //console.log(projArray)
+    }
+    /*readProject(id){
+    
+        console.log(localStorage.key(id))
+        
         const project = JSON.parse(this.data.load(id));
         const printTasks =()=> {
             project.tasks.forEach(task => {
@@ -41,9 +56,10 @@ class ProjectManager{
         }
         console.log(`Project id: ${project.ID}\nProject name: ${project.name}\n`);
         printTasks();
-    }
+    }*/
 
     //update
+
     //delete
 
 
