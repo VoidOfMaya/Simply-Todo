@@ -4,7 +4,6 @@
 class Task{
     static #id = 0;
     #taskId;
-
     constructor(title, info, dueDate,priority , projectId){
         this.title = title;
         this.info = info;
@@ -31,6 +30,7 @@ class Task{
     JSONFormat(){
         return JSON.stringify(this.toJSON());
     }
+
 }
 
 export{
