@@ -24,11 +24,12 @@ if(projectHandler.data.load("tasks")=== null){
   projectHandler.addTask(`fix toilet`,'', `28-06-2025`, '', '2');
 
 }
-projectHandler.getProject(0);
-projectHandler.getProject(1);
-projectHandler.getProject(2);
-projectHandler.getProject(3);
 
+
+projectHandler.getTasks(projectHandler.getProject(0));
+projectHandler.getTasks(projectHandler.getProject(1));
+projectHandler.getTasks(projectHandler.getProject(2));
+projectHandler.getTasks(projectHandler.getProject(3));
 
 //projectHandler.alocateTasks(1, 2);
 //projectHandler.alocateTasks(0, 0);

@@ -58,21 +58,27 @@ class ProjectManager{
         const projectList = this.data.load("proj");
         if(projectList[projectId] !== undefined){
             console.log(`project "${projectList[projectId].name}" found!`);
+            return projectList[projectId].ID;
         }else{
             console.log('project not found, doesnt exist');
         }
     }
 
 
-    /*alocateTasks(taskId, projectId){
-        //console.log(`testing task management function`)
-        const selectedProject = JSON.parse(this.data.load(projectId))
-        const projectTask = selectedProject.tasks;
-        //console.log(selectedProject);
-        projectTask.push(this.tasksList[taskId]);
-        this.data.save(projectId,JSON.stringify(selectedProject));
-        console.log(`project`)
-    }*/
+
+    getTasks(project){
+        if(project === undefined){
+            console.log('your trying to get tasks from a project that doest exist')
+            return
+        }
+        const taskList = this.data.load("tasks");
+        taskList.forEach(task => {
+            
+            if(String(task.projectId) === String(project)){
+                console.log(`task :${task.name}`);
+            }
+        });
+    }
     //read
     //update
     //delete
