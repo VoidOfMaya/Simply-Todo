@@ -54,30 +54,27 @@ class ProjectManager{
         
     }
     //read projects and tasks
-    getProject(projectId){
+    getProject(id){
         const projectList = this.data.load("proj");
-        if(projectList[projectId] !== undefined){
-            console.log(`project "${projectList[projectId].name}" found!`);
-            return projectList[projectId].ID;
-        }else{
+        if(projectList[id] === undefined){
             console.log('project not found, doesnt exist');
+
+        }else{
+            return projectList[id]
         }
     }
 
 
 
-    getTasks(project){
-        if(project === undefined){
+    getTasks(id){
+        
+        if(this.data.load("proj")[id] === undefined){
             console.log('your trying to get tasks from a project that doest exist')
             return
         }
         const taskList = this.data.load("tasks");
-        taskList.forEach(task => {
-            
-            if(String(task.projectId) === String(project)){
-                console.log(`task :${task.name}`);
-            }
-        });
+        const returnValue =  taskList.find(task => String(task.projectId) === String(id));
+        return returnValue;
     }
     //read
     //update
