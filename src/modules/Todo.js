@@ -18,7 +18,7 @@ class Task{
     }
     toJSON(){
         return{
-            ID : this.#taskId,
+            id : this.#taskId,
             name: this.title,
             info:this.info,
             dueDate: this.dueDate,

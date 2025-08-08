@@ -37,6 +37,8 @@ projectHandler.getProject(3);
 console.log(projectOne);
 console.log(tastOne);
 
+;
+
 
 
 

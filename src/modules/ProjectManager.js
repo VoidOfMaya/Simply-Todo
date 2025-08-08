@@ -16,12 +16,9 @@ class ProjectManager{
     
     tasksList = [];
     data = new Storage();
-    constructor(){
-        
-        
+    constructor(){   
     }
     //project C.R.U.D
-    //create
     addProject(projectName){
         const newProject = new Project(projectName);
         const projectData = newProject;
@@ -33,15 +30,31 @@ class ProjectManager{
         this.data.save("proj", projArray)
 
     }
+    deletProject(id){
+        const projectList = this.data.load("proj");
+        if(!projectList.some(p => p.id === id)){
+            console.log(`Delet function Error: project not found`)
+            return;
+        }
+        const updatedlist = projectList.filter(project =>project.id !== id);
+        this.data.save("proj", updatedlist);
 
 
-    //update
+    }
+    getProject(id){
+        const projectList = this.data.load("proj");
+        if(projectList[id] === undefined){
+            console.log('project not found, doesnt exist');
 
-    //delete
-
-
-    // task C.R.U.D
-    //create
+        }else{
+            return projectList[id]
+        }
+    }
+    showProjects(){
+        const projects = this.data.load("proj") || [];
+        console.log("current projects : ", projects);
+    }
+    //task C.R.U.D
     addTask(name, info, date, priority, projID){
         const newTask = new Task(name, info, date, priority, projID);
         const taskData = newTask;
@@ -53,19 +66,6 @@ class ProjectManager{
         this.data.save("tasks", taskArray)
         
     }
-    //read projects and tasks
-    getProject(id){
-        const projectList = this.data.load("proj");
-        if(projectList[id] === undefined){
-            console.log('project not found, doesnt exist');
-
-        }else{
-            return projectList[id]
-        }
-    }
-
-
-
     getTasks(id){
         
         if(this.data.load("proj")[id] === undefined){
@@ -73,32 +73,29 @@ class ProjectManager{
             return
         }
         const taskList = this.data.load("tasks");
-        const returnValue =  taskList.find(task => String(task.projectId) === String(id));
+        const returnValue =  taskList.filter(task => String(task.projectId) === String(id));
         return returnValue;
     }
-    //read
-    //update
-    //delete
-    
-
-    /*display items from storage */
-    showProjects(){
-        console.log(`current projects in storage:`);
-        for (let i = 0; i < localStorage.length; i++) {
-            const results = JSON.parse(localStorage.getItem(i));
-            console.log(results);
+    deletTask(id){
+        const taskList = this.data.load("tasks");
+        if(!taskList.some(t => t.id === id)){
+            console.log(`Delet function Error: project not found`)
+            return;
         }
-        console.log(localStorage.getItem(1))
+        const updatedlist = taskList.filter(task =>task.id !== id);
+        this.data.save("tasks", updatedlist);
+
+
     }
     showTasks(){
-        console.log(`current Tasks in memory:`);
-        console.log(this.tasksList);
-        console.log(`current Tasks in storage:`);
-        for(let i = 0; i < localStorage.length; i++){
-            const currentLoad = JSON.parse(localStorage.getItem(i));
-            console.log(currentLoad.tasks)
-        }
+        const tasks = this.data.load("tasks") || [];
+        console.log("current tasks:", tasks);
     }
+ /* projectDuplicates(item){
+        
+        const projectArray = this.data.load("proj") || [];
+
+    }*/
 }
 
 

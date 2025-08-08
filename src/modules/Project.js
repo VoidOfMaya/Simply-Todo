@@ -13,7 +13,7 @@ class Project{
     }
     toJSON(){
         return{
-            ID : this.Id,
+            id : this.Id,
             name: this.projectName,
             tasks: this.taskList
         };
