@@ -11,9 +11,10 @@ if (projectHandler.data.load("proj") === null){
   projectHandler.addProject(`urgent`);
   projectHandler.addProject('upcoming');
   projectHandler.addProject(`non urgent`);
+
 }
 
-
+  projectHandler.updateProject(1, "not so upcoming");
 
 //demo tasks.
 if(projectHandler.data.load("tasks")=== null){

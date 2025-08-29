@@ -50,6 +50,12 @@ class ProjectManager{
             return projectList[id]
         }
     }
+    updateProject(id, newName){
+        const oldArray = this.data.load("proj");
+        console.log(`runing the  update project method`);
+        oldArray[id].name = newName;
+        console.log(oldArray[id]);
+    }
     showProjects(){
         const projects = this.data.load("proj") || [];
         console.log("current projects : ", projects);
