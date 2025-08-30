@@ -14,8 +14,6 @@ if (projectHandler.data.load("proj") === null){
 
 }
 
-  projectHandler.updateProject(1, "not so upcoming");
-
 //demo tasks.
 if(projectHandler.data.load("tasks")=== null){
 /* taskformat: addtask('name','info','due date','priority','project id') */
@@ -25,6 +23,8 @@ if(projectHandler.data.load("tasks")=== null){
   projectHandler.addTask(`fix toilet`,'', `28-06-2025`, '', '2');
 
 }
+
+projectHandler.updateTask(2, {name: "changed task", duDate: "10-02-2026"});
 //alocate task to relavent project
 const projectOne = projectHandler.getProject(0);
 const tastOne = projectHandler.getTasks(0);
