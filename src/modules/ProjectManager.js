@@ -54,7 +54,8 @@ class ProjectManager{
         const oldArray = this.data.load("proj");
         console.log(`runing the  update project method`);
         oldArray[id].name = newName;
-        console.log(oldArray[id]);
+        //console.log(oldArray[id]);
+        this.data.save("proj", oldArray);
     }
     showProjects(){
         const projects = this.data.load("proj") || [];
@@ -81,6 +82,24 @@ class ProjectManager{
         const taskList = this.data.load("tasks");
         const returnValue =  taskList.filter(task => String(task.projectId) === String(id));
         return returnValue;
+    }
+    // takes {uniqueId , {JSON objects}}
+    updateTask(uniqueId, update){
+        const oldArray = this.data.load("tasks");
+        const keyUpdates = Object.keys(update);
+
+        oldArray.forEach(task => {
+            if(uniqueId === task.id){
+                console.log(`id found, running update task`);
+                
+                keyUpdates.forEach(key=>{
+                    if(key in task){
+                        task[key] = update[key];
+                    }
+                });                            
+            };
+        });
+        this.data.save("tasks", oldArray);
     }
     deletTask(id){
         const taskList = this.data.load("tasks");
