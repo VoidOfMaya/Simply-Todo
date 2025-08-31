@@ -1,11 +1,11 @@
 
 import { Task } from "./Todo";
-import { Project } from "./Project";
 import { Storage } from "./Storage";
 
 class TaskManager{
     
     data = new Storage();
+    //create
     addTask(name, info, date, priority, projID){
         const newTask = new Task(name, info, date, priority, projID);
         const taskData = newTask;
@@ -17,6 +17,7 @@ class TaskManager{
         this.data.save("tasks", taskArray)
         
     }
+    //read
     getTasks(id){
         
         if(this.data.load("proj")[id] === undefined){
@@ -27,7 +28,8 @@ class TaskManager{
         const returnValue =  taskList.filter(task => String(task.projectId) === String(id));
         return returnValue;
     }
-    // takes {uniqueId , {JSON objects}} example: updateTask(2, {name: "changed task", duDate: "10-02-2026"});
+
+    //update.=> takes {uniqueId , {JSON objects}} example: updateTask(2, {name: "changed task", duDate: "10-02-2026"});
     updateTask(uniqueId, update){
         const oldArray = this.data.load("tasks");
         const keyUpdates = Object.keys(update);
@@ -45,6 +47,7 @@ class TaskManager{
         });
         this.data.save("tasks", oldArray);
     }
+    //delete
     deletTask(id){
         const taskList = this.data.load("tasks");
         if(!taskList.some(t => t.id === id)){
@@ -56,10 +59,17 @@ class TaskManager{
 
 
     }
-    showTasks(){
-        const tasks = this.data.load("tasks") || [];
-        console.log("current tasks:", tasks);
-    }
+    //showTasks(){
+    //    const tasks = this.data.load("tasks") || [];
+    //    console.log("current tasks:", tasks);
+    //}
+
+    /** additional required functionalities:
+        => Mark task as complete/incomplete → toggle a completed property.
+        => Sort tasks → by due date, priority, or name.
+        => Filter tasks → e.g. show only today’s tasks, this week’s tasks, or only incomplete tasks.
+        => Move task between projects → reassign task.projectId. 
+     */
 
 }
 export{

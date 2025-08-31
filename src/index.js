@@ -3,7 +3,10 @@ import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager";
 
 console.log(`project is live`);
-
+/* additional consideratuibs
+  => set a default project where tasks without a project go
+  =>archived tasks handling with an invalid projID
+*/
 
 const projectHandler = new ProjectManager();
 const taskHandler = new TaskManager();
@@ -25,7 +28,6 @@ if(taskHandler.data.load("tasks")=== null){
   taskHandler.addTask(`fix toilet`,'', `28-06-2025`, '', '2');
 
 }
-taskHandler.updateTask(2, {name: "changed task", duDate: "10-02-2026"});
 //alocate task to relavent project
 const projectOne = projectHandler.getProject(0);
 const tastOne = taskHandler.getTasks(0);
