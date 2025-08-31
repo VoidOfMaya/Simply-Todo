@@ -3,64 +3,9 @@ import { Task } from "./Todo";
 import { Project } from "./Project";
 import { Storage } from "./Storage";
 
-/* what this does:
--single resposibility: sort tasks to their respective projcects
--gets projects 
--inputs created projects to local storage
--gets tasks
--inputs created tasks into projects within local storage
-*/
-
-class ProjectManager{
+class TaskManager{
     
     data = new Storage();
-    constructor(){   
-    }
-    //project C.R.U.D
-    addProject(projectName){
-        const newProject = new Project(projectName);
-        const projectData = newProject;
-        let projArray =this.data.load("proj");
-        if( !Array.isArray(projArray)){
-            projArray = [];
-        }
-        projArray.push(projectData);
-        this.data.save("proj", projArray)
-
-    }
-    deletProject(id){
-        const projectList = this.data.load("proj");
-        if(!projectList.some(p => p.id === id)){
-            console.log(`Delet function Error: project not found`)
-            return;
-        }
-        const updatedlist = projectList.filter(project =>project.id !== id);
-        this.data.save("proj", updatedlist);
-
-
-    }
-    getProject(id){
-        const projectList = this.data.load("proj");
-        if(projectList[id] === undefined){
-            console.log('project not found, doesnt exist');
-
-        }else{
-            return projectList[id]
-        }
-    }
-    updateProject(id, newName){
-        const oldArray = this.data.load("proj");
-        console.log(`runing the  update project method`);
-        oldArray[id].name = newName;
-        //console.log(oldArray[id]);
-        this.data.save("proj", oldArray);
-    }
-    showProjects(){
-        const projects = this.data.load("proj") || [];
-        console.log("current projects : ", projects);
-    }
-    //task C.R.U.D
-    /*
     addTask(name, info, date, priority, projID){
         const newTask = new Task(name, info, date, priority, projID);
         const taskData = newTask;
@@ -115,13 +60,8 @@ class ProjectManager{
         const tasks = this.data.load("tasks") || [];
         console.log("current tasks:", tasks);
     }
-        */
 
 }
-
-
 export{
-    ProjectManager,
+    TaskManager,
 }
-
-
