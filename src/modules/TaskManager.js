@@ -64,12 +64,13 @@ class TaskManager{
     //    console.log("current tasks:", tasks);
     //}
 
-    /** additional required functionalities:
+    /** additional cool functionalities:
         => Mark task as complete/incomplete → toggle a completed property.
         => Sort tasks → by due date, priority, or name.
         => Filter tasks → e.g. show only today’s tasks, this week’s tasks, or only incomplete tasks.
         => Move task between projects → reassign task.projectId. 
      */
+    
 
 }
 export{

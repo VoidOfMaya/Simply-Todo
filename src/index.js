@@ -1,6 +1,7 @@
 
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager";
+import { renderElements } from "./modules/DOM";
 
 console.log(`project is live`);
 /* additional consideratuibs
@@ -10,6 +11,9 @@ console.log(`project is live`);
 
 const projectHandler = new ProjectManager();
 const taskHandler = new TaskManager();
+const domHandler = new renderElements();
+
+domHandler.renderSidebar();
 
 /*demo projects */
 if (projectHandler.data.load("proj") === null){
