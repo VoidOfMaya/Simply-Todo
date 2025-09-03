@@ -6,12 +6,16 @@
  => task card elements
  */
 
- import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./colors"; // topwhite, mainwhite, balck
+import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./colors"; // topwhite, mainwhite, balck
+
 
 const body = document.querySelector("body");
+body.style.fontFamily = "Lucida Grande”, “Lucida Sans Unicode”, “Lucida Sans”, Geneva, Verdana, sans-serif";
 
 const topLogo = document.createElement("div");
-topLogo.innerHTML ="logo placeholder";
+topLogo.innerHTML ='<i class="fa-solid fa-mug-hot fa-fade"></i> Simply todo';
+topLogo.style.color = black();
+topLogo.style.fontSize= '38px';
 topLogo.style.alignSelf = "center";
 topLogo.style.marginLeft = "2vw";
 topLogo.style.gridArea = "logo";
@@ -19,7 +23,7 @@ topLogo.style.gridArea = "logo";
 const urgent = document.createElement("div");
 urgent.style.background = urgentRed();
 urgent.style.gridArea ="urgent";
-console.log(urgentRed());
+
 
 const upComing = document.createElement("div");
 upComing.style.background = moderateYellow();

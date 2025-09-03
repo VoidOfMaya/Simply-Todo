@@ -2,6 +2,7 @@
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager";
 import { body, topBar,sideBar,displayContainer } from "./modules/DOM";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 console.log(`project is live`);
 /* additional consideratuibs
