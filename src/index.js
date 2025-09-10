@@ -43,7 +43,7 @@ projectHandler.getProject(2);
 projectHandler.getProject(3);
 //projectHandler.getTasks(3);
 
-renderSide(projectHandler.showProjects())
+renderSide(projectHandler.showProjects(), projectHandler.addProject)
 console.log(projectOne);
 console.log(tastOne);
 

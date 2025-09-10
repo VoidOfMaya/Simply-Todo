@@ -94,7 +94,7 @@ let mainDisplayRoot = null;
 
 const renderTop = function(){
 };
-const renderSide = function(projects){
+const renderSide = function(projects, btnFunction){
     sidebarRoot.innerHTML = "";
     sidebarRoot.style.height = "100%";
     sidebarRoot.style.display = "grid";
@@ -104,28 +104,51 @@ const renderSide = function(projects){
     "projects"
     "addNew"
     `
+    //sidebar title
     const title = document.createElement("div");
-    title.innerHTML = "Projects";
+    title.innerHTML = '<i class="fa-solid fa-diagram-project"></i> Projects';
     title.style.gridArea = "title";
     title.style.color = mainWhite();
     title.style.justifySelf = "center";
     title.style.alignSelf = "center";
    
+
+    //sidebar projects hub
     const projectList = document.createElement("div")
-    projectList.style.gridArea = "projects"
+    projectList.style.gridArea = "projects";
+    projectList.style.overflowY = "auto";           
+    projectList.style.maxHeight = "100%";           
+    projectList.style.display = "flex";             
+    projectList.style.flexDirection = "column";     
+    projectList.style.gap = "5px";                  
+    projectList.style.padding = "5px";              
+    projectList.style.boxSizing = "border-box";
     projects.forEach(project => {
         const btn = document.createElement("div");
         btn.style.gridArea = "projects"
         btn.style.color = mainWhite();
         btn.style.padding = "10px 10px"
         btn.style.justifySelf ="center"
-        btn.textContent = project.name;
-
+        if(project.id !== 0 &&project.id !== 1 &&project.id !== 2){
+            btn.textContent = project.name;
+        }
         btn.addEventListener("click", ()=>{
             console.log(`click event for project ${project.name} at id ${project.id}`)
         })
         projectList.appendChild(btn);
     });
+    // add new project
+    const addProject = document.createElement("div")
+    addProject.innerHTML=`<i class="fa-solid fa-plus"></i>`;
+    addProject.style.color = mainWhite();
+    addProject.style.justifySelf ="center";
+    addProject.style.alignSelf = "center";
+    addProject.style.gridArea = "addNew";
+    addProject.addEventListener("click",()=>{
+        //code goes here
+    })
+
+    sidebarRoot.appendChild(addProject);
     sidebarRoot.appendChild(projectList);
     sidebarRoot.appendChild(title);
     
