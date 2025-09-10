@@ -1,7 +1,7 @@
 
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager";
-import { body, topBar,sideBar,displayContainer } from "./modules/DOM";
+import { init } from "./modules/DOM";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 console.log(`project is live`);
@@ -13,9 +13,7 @@ console.log(`project is live`);
 const projectHandler = new ProjectManager();
 const taskHandler = new TaskManager();
 
-body.appendChild(topBar());
-body.appendChild(sideBar());
-body.appendChild(displayContainer());
+init();
 
 
 /*demo projects */
