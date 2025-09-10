@@ -1,7 +1,7 @@
 
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager";
-import { init } from "./modules/DOM";
+import { init, renderSide } from "./modules/DOM";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 console.log(`project is live`);
@@ -43,6 +43,7 @@ projectHandler.getProject(2);
 projectHandler.getProject(3);
 //projectHandler.getTasks(3);
 
+renderSide(projectHandler.showProjects())
 console.log(projectOne);
 console.log(tastOne);
 

@@ -50,10 +50,14 @@ class ProjectManager{
 
 
     }    
-    //showProjects(){
-    //    const projects = this.data.load("proj") || [];
-    //    console.log("current projects : ", projects);
-    //}
+    showProjects() {
+        const projects = this.data.load("proj") || [];
+        const result = [];
+        projects.forEach(project => {
+            result.push({ name: project.name, id: project.ID });
+        });
+        return result;
+    }
 }
 
 
