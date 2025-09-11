@@ -126,16 +126,26 @@ const renderSide = function(projects, btnFunction){
     projects.forEach(project => {
         const btn = document.createElement("div");
         btn.style.gridArea = "projects"
+        btn.style.fontSize = "18px";
         btn.style.color = mainWhite();
         btn.style.padding = "10px 10px"
         btn.style.justifySelf ="center"
-        if(project.id !== 0 &&project.id !== 1 &&project.id !== 2){
+        btn.style.alignSelf="center"
+
+        if(project.name !== "urgent" &&project.name !== "upcoming"&&project.name !== "non urgent" ){
+
             btn.textContent = project.name;
-        }
-        btn.addEventListener("click", ()=>{
+            btn.addEventListener("click", ()=>{
             console.log(`click event for project ${project.name} at id ${project.id}`)
+            })
+            projectList.appendChild(btn);
+        }
+        btn.addEventListener("mouseover", ()=>{
+            btn.style.fontSize = "20px"          
         })
-        projectList.appendChild(btn);
+        btn.addEventListener("mouseout", ()=>{
+            btn.style.fontSize = "18px";
+        })
     });
     // add new project
     const addProject = document.createElement("div")
@@ -143,9 +153,22 @@ const renderSide = function(projects, btnFunction){
     addProject.style.color = mainWhite();
     addProject.style.justifySelf ="center";
     addProject.style.alignSelf = "center";
+    addProject.style.alignContent= "center";
+    addProject.style.padding= "5px"
     addProject.style.gridArea = "addNew";
     addProject.addEventListener("click",()=>{
         //code goes here
+        const dialog = document.createElement("dialog");
+        
+    })
+    addProject.addEventListener("mouseover", ()=>{
+        addProject.style.fontSize = "20px"
+        addProject.style.borderRadius= "10px";
+        addProject.style.backgroundColor = "#686868ff"
+    })
+    addProject.addEventListener("mouseout", ()=>{
+        addProject.style.fontSize = "18px";
+        addProject.style.backgroundColor = black();
     })
 
     sidebarRoot.appendChild(addProject);

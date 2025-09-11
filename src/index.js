@@ -21,6 +21,7 @@ if (projectHandler.data.load("proj") === null){
   projectHandler.addProject(`urgent`);
   projectHandler.addProject('upcoming');
   projectHandler.addProject(`non urgent`);
+  projectHandler.addProject('home');
 
 }
 
