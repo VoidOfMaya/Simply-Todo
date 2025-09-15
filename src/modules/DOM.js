@@ -94,6 +94,53 @@ let mainDisplayRoot = null;
 
 const renderTop = function(){
 };
+const projectDialog = function(name){
+// add project dialog modal
+    const dialog = document.createElement("dialog");
+    dialog.style.width = "25vw";
+    dialog.style.border = "none";
+    dialog.style.borderRadius = "40px";
+    dialog.style.backgroundColor = mainWhite()
+    dialog.style.display = "grid";
+    dialog.style.gridTemplate = "1fr /2fr 1fr";
+    dialog.style.alignItems = "center";
+    dialog.style.justifyContent = "center";
+
+
+    const projectName = document.createElement("input");
+    projectName.type = "text";
+    projectName.placeholder= "Project name goes here";
+    projectName.style.width = "90%";
+    projectName.style.justifySelf= "center";
+    projectName.style.border = "none";
+    projectName.style.outline = "none";
+    projectName.style.padding = "10px";
+    projectName.style.borderRadius ="25px 0px 0px 25px";
+    projectName.style.marginLeft = "20%";
+
+    const btn = document.createElement("div");
+    btn.innerHTML= "Create"
+    btn.style.backgroundColor = topWhite()
+    btn.style.padding= "10px"
+    btn.style.borderRadius = "0px 25px 25px 0px"
+    btn.style.justifySelf = "center";
+    btn.addEventListener("mouseover", ()=>{
+        btn.style.padding = "11px";
+        btn.style.color = mainWhite()
+        btn.style.backgroundColor = urgentRed;
+    })
+    btn.addEventListener("mouseover", ()=>{
+        btn.style.padding = "10px";
+        btn.style.color = black()
+        btn.style.backgroundColor = topWhite();
+    })
+
+   
+    dialog.appendChild(projectName); c
+    dialog.appendChild(btn)
+
+    return dialog
+}
 const renderSide = function(projects, btnFunction){
     sidebarRoot.innerHTML = "";
     sidebarRoot.style.height = "100%";
@@ -147,33 +194,8 @@ const renderSide = function(projects, btnFunction){
             btn.style.fontSize = "18px";
         })
     });
-    // add project dialog modal
-    const dialog = document.createElement("dialog");
-    dialog.style.width = "25vw";
-    dialog.style.border = "none";
-    dialog.style.borderRadius = "25px";
-    dialog.style.backgroundColor = mainWhite()
-    dialog.style.display = "flex";
-    dialog.style.flexDirection = "column";
-    dialog.style.alignItems = "center";
-    dialog.style.justifyContent = "center";
-
-
-    const projectName = document.createElement("input");
-    projectName.type = "text";
-    projectName.placeholder= "Project name goes here";
-    projectName.style.width = "90%";
-    projectName.style.justifySelf= "center";
-    projectName.style.border = "none";
-    projectName.style.outline = "none";
-    projectName.style.padding = "10px";
-    projectName.style.borderRadius ="25px";
-   
-   
-
-
-
-    dialog.appendChild(projectName);
+    //dialog window
+    const dialogWindow = projectDialog()
     // add new project
     const addProject = document.createElement("div")
     addProject.innerHTML=`<i class="fa-solid fa-plus"></i>`;
@@ -185,7 +207,7 @@ const renderSide = function(projects, btnFunction){
     addProject.style.gridArea = "addNew";
     addProject.addEventListener("click",()=>{
         //code goes here
-        dialog.showModal()
+        dialogWindow.showModal()
         
     })
     addProject.addEventListener("mouseover", ()=>{
@@ -197,7 +219,7 @@ const renderSide = function(projects, btnFunction){
         addProject.style.fontSize = "18px";
         addProject.style.backgroundColor = black();
     })
-    sidebarRoot.appendChild(dialog);
+    document.body.appendChild(dialogWindow);
     sidebarRoot.appendChild(addProject);
     sidebarRoot.appendChild(projectList);
     sidebarRoot.appendChild(title);
