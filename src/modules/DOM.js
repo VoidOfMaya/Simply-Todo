@@ -147,6 +147,33 @@ const renderSide = function(projects, btnFunction){
             btn.style.fontSize = "18px";
         })
     });
+    // add project dialog modal
+    const dialog = document.createElement("dialog");
+    dialog.style.width = "25vw";
+    dialog.style.border = "none";
+    dialog.style.borderRadius = "25px";
+    dialog.style.backgroundColor = mainWhite()
+    dialog.style.display = "flex";
+    dialog.style.flexDirection = "column";
+    dialog.style.alignItems = "center";
+    dialog.style.justifyContent = "center";
+
+
+    const projectName = document.createElement("input");
+    projectName.type = "text";
+    projectName.placeholder= "Project name goes here";
+    projectName.style.width = "90%";
+    projectName.style.justifySelf= "center";
+    projectName.style.border = "none";
+    projectName.style.outline = "none";
+    projectName.style.padding = "10px";
+    projectName.style.borderRadius ="25px";
+   
+   
+
+
+
+    dialog.appendChild(projectName);
     // add new project
     const addProject = document.createElement("div")
     addProject.innerHTML=`<i class="fa-solid fa-plus"></i>`;
@@ -158,7 +185,7 @@ const renderSide = function(projects, btnFunction){
     addProject.style.gridArea = "addNew";
     addProject.addEventListener("click",()=>{
         //code goes here
-        const dialog = document.createElement("dialog");
+        dialog.showModal()
         
     })
     addProject.addEventListener("mouseover", ()=>{
@@ -170,7 +197,7 @@ const renderSide = function(projects, btnFunction){
         addProject.style.fontSize = "18px";
         addProject.style.backgroundColor = black();
     })
-
+    sidebarRoot.appendChild(dialog);
     sidebarRoot.appendChild(addProject);
     sidebarRoot.appendChild(projectList);
     sidebarRoot.appendChild(title);
@@ -178,6 +205,7 @@ const renderSide = function(projects, btnFunction){
     return sidebarRoot;
 
 };
+
 const renderDisplay= function(){};
 const renderTasks = function(){};
 
