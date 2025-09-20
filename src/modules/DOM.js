@@ -94,7 +94,7 @@ let mainDisplayRoot = null;
 
 const renderTop = function(){
 };
-const projectDialog = function(name){
+const projectDialog = function(projects, btnFunction){
 // add project dialog modal
     const dialog = document.createElement("dialog");
     dialog.style.width = "25vw";
@@ -134,9 +134,19 @@ const projectDialog = function(name){
         btn.style.color = black()
         btn.style.backgroundColor = topWhite();
     })
+    btn.addEventListener("click",()=>{
+        const name = projectName.value.trim();
+        if (name === ""){
+            alert("please enter a project name");
+            
+        }
+        btnFunction(name);
+        dialog.close();
+        renderSide(projects, btnFunction);
+    })
 
    
-    dialog.appendChild(projectName); c
+    dialog.appendChild(projectName);
     dialog.appendChild(btn)
 
     return dialog
@@ -195,7 +205,7 @@ const renderSide = function(projects, btnFunction){
         })
     });
     //dialog window
-    const dialogWindow = projectDialog()
+    const dialogWindow = projectDialog(projects, btnFunction)
     // add new project
     const addProject = document.createElement("div")
     addProject.innerHTML=`<i class="fa-solid fa-plus"></i>`;
@@ -234,5 +244,6 @@ const renderTasks = function(){};
 export{
     init,
     renderSide,
+    projectDialog,
 
 }
