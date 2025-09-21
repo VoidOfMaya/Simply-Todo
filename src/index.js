@@ -1,7 +1,8 @@
 
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager";
-import { init, renderSide, projectDialog } from "./modules/DOM";
+import {renderSide, projectDialog } from "./modules/DOM";
+import { init, initDialogP } from "./modules/domManager";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 console.log(`project is live`);
@@ -14,6 +15,7 @@ const projectHandler = new ProjectManager();
 const taskHandler = new TaskManager();
 
 init();
+initDialogP(projectHandler.addProject.bind(projectHandler));
 
 
 /*demo projects */
@@ -43,7 +45,7 @@ projectHandler.getProject(2);
 //projectHandler.getTasks(2);
 projectHandler.getProject(3);
 //projectHandler.getTasks(3);
-renderSide(projectHandler.showProjects(), projectHandler.addProject.bind(projectHandler));
+//renderSide(projectHandler.showProjects(), projectHandler.addProject.bind(projectHandler));
 
 console.log(projectOne);
 console.log(tastOne);
