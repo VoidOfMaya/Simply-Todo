@@ -21,3 +21,11 @@ this is a new attempt at the todo app project within the odin project.
 ### current project structure:
 
 ![simply to do gepg drawio](https://github.com/user-attachments/assets/ba142ad6-1622-45e7-9dde-80c3256c29ed)
+
+### dependncies:
+
+- node.js v18.15.0
+- npm v9.5.0
+- @fortawesome/fontawesome-free ^v7.0.1
+- webpack ^v5.101.3
+
