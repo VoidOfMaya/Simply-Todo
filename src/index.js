@@ -2,8 +2,9 @@
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager";
 //import {renderSide, projectDialog } from "./modules/DOM";
-import { init, initDialogP, initSideBare } from "./modules/domManager";
+import { init, initDialogP, initSideBare , renderSide} from "./modules/domManager";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { staticDom } from "./modules/staticDom";
 
 console.log(`project is live`);
 /* additional consideratuibs
@@ -17,7 +18,9 @@ const taskHandler = new TaskManager();
 init();
 initSideBare(projectHandler.showProjects(), projectHandler.addProject.bind(projectHandler));
 initDialogP(projectHandler.addProject.bind(projectHandler));
-
+staticDom.dialog_CPD.addEventListener('close', ()=>{
+  renderSide(projectHandler.showProjects())
+})
 /*demo projects */
 if (projectHandler.data.load("proj") === null){
   projectHandler.addProject(`urgent`);

@@ -2,6 +2,7 @@ import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./c
 import { projectDialog } from "./DOM";
 import { staticDom } from "./staticDom";
 
+let dialogInstance =null;
 const init = function(){
     const body = document.querySelector("body");
     body.style.fontFamily = "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
@@ -30,23 +31,23 @@ const initDialogP = function(btnFunction){
         }
         btnFunction(name);
         dialog_CPD.close();
-        //renderSide(projects, btnFunction);
+        document.body.removeChild(dialogInstance);        
+        
     })
-    
 
 }
 
-let dialogInstance =null;
-const initSideBare = function(projects,btnFunction){
+const initSideBare = function(projects){
     //append ti body
     document.body.appendChild(staticDom.side);  
 
     //singletone instance of project creat dialog
     dialogInstance = staticDom.dialog_CPD;
-    document.body.appendChild(dialogInstance);
+    //document.body.appendChild(dialogInstance);
 
     //init add project button
     staticDom.addProjectBtn.addEventListener("click",()=>{
+        document.body.appendChild(dialogInstance);
         dialogInstance.showModal();
     });
         staticDom.addProjectBtn.addEventListener("mouseover", () => {
@@ -59,11 +60,11 @@ const initSideBare = function(projects,btnFunction){
         staticDom.addProjectBtn.style.fontSize = "18px";
         staticDom.addProjectBtn.style.backgroundColor = black();
     });
-    renderSide(projects,btnFunction);
+    renderSide(projects);
 }
-const renderSide = function(projects,btnFunction){
+const renderSide = function(projects){
     const root = staticDom.sideRoot;
-    //root.innerHTML = "";
+    root.innerHTML = "";
 
     projects.forEach((project) => {
         if (["urgent", "upcoming", "non urgent"].includes(project.name)) return;
@@ -73,7 +74,7 @@ const renderSide = function(projects,btnFunction){
         btn.style.fontSize = "18px";
         btn.style.color = mainWhite();
         btn.style.padding = "10px";
-
+        root.appendChild(btn);
         btn.addEventListener("click", () => {
             console.log(`Project clicked: ${project.name}`);
         });
@@ -81,7 +82,7 @@ const renderSide = function(projects,btnFunction){
         btn.addEventListener("mouseover", () => btn.style.fontSize = "20px");
         btn.addEventListener("mouseout", () => btn.style.fontSize = "18px");
 
-        root.appendChild(btn);
+        
     });
 }
 
@@ -89,4 +90,5 @@ export{
     init,
     initDialogP,
     initSideBare,
+    renderSide,
 }
