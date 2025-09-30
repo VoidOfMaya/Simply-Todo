@@ -1,5 +1,4 @@
 import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./colors"; // topwhite, mainwhite, balck
-import { projectDialog } from "./DOM";
 import { staticDom } from "./staticDom";
 
 let dialogInstance =null;
