@@ -1,3 +1,5 @@
+import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./colors"; // topwhite, mainwhite, balck
+import { projectDialog } from "./DOM";
 import { staticDom } from "./staticDom";
 
 const init = function(){
@@ -12,29 +14,79 @@ const init = function(){
     "side main"
     `
     body.appendChild(staticDom.head);
-    body.appendChild(staticDom.side);
     body.appendChild(staticDom.main);
     return body;   
+
 }
 const initDialogP = function(btnFunction){
     //extracting out dialog relevant variables from staticDom
-    const{projDialog, projDialogInput, projDialogBtn} = staticDom;
+    const{dialog_CPD, input_CPD, button_CPD} = staticDom;
 
-    projDialogBtn.addEventListener("click",()=>{
-        const name = projDialogInput.value.trim();
+    button_CPD.addEventListener("click",()=>{
+        const name = input_CPD.value.trim();
         if (name === ""){
             alert("please enter a project name");
             return            
         }
         btnFunction(name);
-        projDialog.close();
+        dialog_CPD.close();
         //renderSide(projects, btnFunction);
     })
     
 
 }
 
+let dialogInstance =null;
+const initSideBare = function(projects,btnFunction){
+    //append ti body
+    document.body.appendChild(staticDom.side);  
+
+    //singletone instance of project creat dialog
+    dialogInstance = staticDom.dialog_CPD;
+    document.body.appendChild(dialogInstance);
+
+    //init add project button
+    staticDom.addProjectBtn.addEventListener("click",()=>{
+        dialogInstance.showModal();
+    });
+        staticDom.addProjectBtn.addEventListener("mouseover", () => {
+        staticDom.addProjectBtn.style.fontSize = "20px";
+        staticDom.addProjectBtn.style.borderRadius = "10px";
+        staticDom.addProjectBtn.style.backgroundColor = "#686868ff";
+    });
+
+    staticDom.addProjectBtn.addEventListener("mouseout", () => {
+        staticDom.addProjectBtn.style.fontSize = "18px";
+        staticDom.addProjectBtn.style.backgroundColor = black();
+    });
+    renderSide(projects,btnFunction);
+}
+const renderSide = function(projects,btnFunction){
+    const root = staticDom.sideRoot;
+    //root.innerHTML = "";
+
+    projects.forEach((project) => {
+        if (["urgent", "upcoming", "non urgent"].includes(project.name)) return;
+
+        const btn = document.createElement("div");
+        btn.textContent = project.name;
+        btn.style.fontSize = "18px";
+        btn.style.color = mainWhite();
+        btn.style.padding = "10px";
+
+        btn.addEventListener("click", () => {
+            console.log(`Project clicked: ${project.name}`);
+        });
+
+        btn.addEventListener("mouseover", () => btn.style.fontSize = "20px");
+        btn.addEventListener("mouseout", () => btn.style.fontSize = "18px");
+
+        root.appendChild(btn);
+    });
+}
+
 export{
     init,
-    initDialogP
+    initDialogP,
+    initSideBare,
 }

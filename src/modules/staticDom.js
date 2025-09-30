@@ -54,12 +54,57 @@ const createHeader= function(){
 
 const createSide = function(){
     const side = document.createElement("div");
+    sideRoot = document.createElement("div")
+    
+    side.id = "sidebar";
     side.style.backgroundColor = black(); 
     side.style.boxShadow = "inset -1px 30px 33px -9px rgba(0, 0, 0, 1)"
     side.style.gridArea = "side";
-    sideRoot = document.createElement("div");
+    side.style.height = "100%";
+    side.style.display = "grid";
+    side.style.gridTemplate= "1fr 20fr 1fr / 1fr";
+    side.style.gridTemplateAreas = `
+    "title"
+    "projects"
+    "addNew"
+    `
+  //sidebar title
+    const title = document.createElement("div");
+    title.innerHTML = '<i class="fa-solid fa-diagram-project"></i> Projects';
+    title.style.gridArea = "title";
+    title.style.color = mainWhite();
+    title.style.justifySelf = "center";
+    title.style.alignSelf = "center";
+   
+    //sidebar projects hub
+    const projectList = document.createElement("div")
+    projectList.id= "project-list"
+    projectList.style.gridArea = "projects";
+    projectList.style.overflowY = "auto";           
+    projectList.style.maxHeight = "100%";           
+    projectList.style.display = "flex";             
+    projectList.style.flexDirection = "column";     
+    projectList.style.gap = "5px";                  
+    projectList.style.padding = "5px";              
+    projectList.style.boxSizing = "border-box";
+
+    // add new project
+    const addProject = document.createElement("div")
+    addProject.id = "add-project-btn"
+    addProject.innerHTML=`<i class="fa-solid fa-plus"></i>`;
+    addProject.style.color = mainWhite();
+    addProject.style.justifySelf ="center";
+    addProject.style.alignSelf = "center";
+    addProject.style.alignContent= "center";
+    addProject.style.padding= "5px"
+    addProject.style.gridArea = "addNew";
+
+    //append children
+    side.appendChild(title);
+    side.appendChild(projectList);
+    side.appendChild(addProject);
     side.appendChild(sideRoot);
-    return side;
+    return {side, projectList, addProject};
 }
 
 const createDisplay = function(){
@@ -115,17 +160,22 @@ const createProjectDialog = function(){
        
         dialog.appendChild(projectName);
         dialog.appendChild(btn)
+        
     
-        return {dialog, input: projectName, button: btn};
+        return {dialog, projectName, btn};
 }
-//splits createproject dialog to  3 variables while calling the function once
-const { dialogP, inputP, buttonP } = createProjectDialog();
-
+//spliting finctions to variables while calling the function once
+const { dialog, projectName, btn } = createProjectDialog();
+const {side, projectList, addProject} = createSide();
+// _CPD is a pointer to the original function 
 export const staticDom= {
         head : createHeader(),
-        side : createSide(),
         main : createDisplay(),
-        projDialog : dialogP,
-        projDialogInput: inputP,
-        projDialogBtn: buttonP,
+        side,
+        sideRoot: projectList,
+        addProjectBtn: addProject,
+        dialog_CPD : dialog,
+        input_CPD  : projectName,
+        button_CPD : btn,
+
     }

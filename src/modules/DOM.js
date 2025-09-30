@@ -152,7 +152,7 @@ const projectDialog = function(projects, btnFunction){
     return dialog
 }
 const renderSide = function(projects, btnFunction){
-    sidebarRoot.innerHTML = "";
+    //sidebarRoot.innerHTML = "";
     sidebarRoot.style.height = "100%";
     sidebarRoot.style.display = "grid";
     sidebarRoot.style.gridTemplate= "1fr 20fr 1fr / 1fr";
