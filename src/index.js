@@ -42,7 +42,7 @@ function initApp(){
   initDialogP(projectHandler.addProject.bind(projectHandler));
  
   staticDom.dialog_CPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects())
+    renderSide(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler))
   })  
 }
 

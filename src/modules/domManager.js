@@ -36,6 +36,7 @@ const initDialogP = function(btnFunction){
 
 }
 
+
 const initSideBare = function(projects){
     //append ti body
     document.body.appendChild(staticDom.side);  
@@ -61,26 +62,108 @@ const initSideBare = function(projects){
     });
     renderSide(projects);
 }
-const renderSide = function(projects){
+const renderSide = function(projects, removefunction){
     const root = staticDom.sideRoot;
     root.innerHTML = "";
 
     projects.forEach((project) => {
         if (["urgent", "upcoming", "non urgent"].includes(project.name)) return;
 
+        
         const btn = document.createElement("div");
-        btn.textContent = project.name;
+        const name = document.createElement("div");
+        const remove = document.createElement("div")
+
+        btn.style.display = "grid";
+        btn.style.gridTemplateColumns = "1fr 19fr";
+        btn.style.gridTemplateAreas = `"remove name"`
+
+        name.textContent = project.name;
+        name.style.gridArea ="name";
+
+        
+        remove.textContent = '';
+        remove.style.gridArea = "remove"
+
+
+
         btn.style.fontSize = "18px";
         btn.style.color = mainWhite();
-        btn.style.padding = "10px";
+        btn.style.padding = "10px 0px";
+        btn.appendChild(remove);
+        btn.appendChild(name);
         root.appendChild(btn);
+
+        //general button event handeling        
         btn.addEventListener("click", () => {
             console.log(`Project clicked: ${JSON.stringify(project)}`);
 
         });
 
-        btn.addEventListener("mouseover", () => btn.style.fontSize = "20px");
-        btn.addEventListener("mouseout", () => btn.style.fontSize = "18px");
+        btn.addEventListener("mouseover", () => {
+            btn.style.fontSize = "20px"
+            remove.style.background = urgentRed();
+        });
+        btn.addEventListener("mouseout", () => {
+            btn.style.fontSize = "18px"
+            remove.style.background = "none";
+            btn.style.gap = "5px"
+        });
+        //delet event handeling
+        const {dialog_dPD, delete_dBD, cancel_dBD, alert_dBD} = staticDom;
+        remove.addEventListener("mouseover", ()=>{
+            
+            remove.textContent = 'delete';
+            
+            btn.style.gridTemplateColumns = "4fr 6fr";
+
+        })
+        remove.addEventListener("mouseout", ()=>{
+            
+            remove.textContent = '';
+            btn.style.gridTemplateColumns = "1fr 19fr";
+        })
+        remove.addEventListener("click", ()=>{
+            document.body.appendChild(dialog_dPD);
+            dialog_dPD.showModal();
+            alert_dBD.innerHTML = `this action will delete your "${project.name}" Project !`
+        })
+        //internal delet dialog handelling
+        const cancelClickHandler= function(){
+            dialog_dPD.close()
+            if(document.body.contains(dialog_dPD)){
+                document.body.removeChild(dialog_dPD);
+            }
+            console.log("project deletion- cancelled")
+        }
+        // cancel btn
+        cancel_dBD.addEventListener("mouseover", ()=>{
+            cancel_dBD.style.background = green();
+        })
+        cancel_dBD.addEventListener("mouseout", ()=>{
+            cancel_dBD.style.background = topWhite();
+        })
+        //handles event listener stacking
+        cancel_dBD.removeEventListener('click', cancelClickHandler);
+        cancel_dBD.addEventListener('click', cancelClickHandler);
+        //delete btn
+        delete_dBD.addEventListener("mouseover", ()=>{
+            delete_dBD.style.background = urgentRed();
+        })
+        delete_dBD.addEventListener("mouseout", ()=>{
+            delete_dBD.style.background = topWhite();
+        })
+        delete_dBD.addEventListener("click", ()=>{
+            if(["urgent", "upcoming", "non urgent, home"].includes(project.name) ){
+                console.log("can not delet essential manditory projects")
+                return
+            }
+            removefunction(project.id);
+            dialog_dPD.close()
+            document.body.removeChild(dialog_dPD);
+            console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
+        })
+
 
         
     });

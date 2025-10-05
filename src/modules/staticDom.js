@@ -119,54 +119,107 @@ const createDisplay = function(){
 
     return display;
 }
+const deleteProjectDialog = function(deleteFunction, id){
+
+    const deleteDialog = document.createElement("dialog");
+    const alert = document.createElement("div");
+    const cancelDelete = document.createElement("div");
+    const excuteDelete = document.createElement("div")
+
+    deleteDialog.style.padding = "0px";
+    deleteDialog.style.paddingTop ="5px";
+    deleteDialog.style.width = "25vw";
+    deleteDialog.style.border = "none";
+    deleteDialog.style.borderRadius = "40px";
+    deleteDialog.style.backgroundColor = mainWhite()
+    deleteDialog.style.display = "grid";
+    deleteDialog.style.gap = "5px";
+    deleteDialog.style.gridTemplate = "1fr 1fr/1fr 1fr";
+    deleteDialog.style.alignItems = "center";
+    deleteDialog.style.justifyContent = "center";
+    deleteDialog.style.gridTemplateAreas = `"message message"
+                                            "cancel delete"`
+
+    alert.innerText= `placeholder text`;
+    alert.style.padding = "0px 5px";
+    alert.style.justifySelf = "center";
+    alert.style.gridArea ="message";
+
+    cancelDelete.innerHTML = "<div>Cancel</div>";
+    cancelDelete.style.justifyItems = "center";
+    cancelDelete.style.padding = "5px";
+    cancelDelete.style.color = mainWhite();
+    cancelDelete.style.background = topWhite();
+    cancelDelete.style.borderBottomLeftRadius = "40px";
+    cancelDelete.style.gridArea = "cancel";
+
+    excuteDelete.innerHTML = "<div>delete</div>";
+    excuteDelete.style.justifyItems = "center";
+    excuteDelete.style.padding = "5px";
+    excuteDelete.style.color = mainWhite();
+    excuteDelete.style.background = topWhite();
+    excuteDelete.style.borderBottomRightRadius = "40px";
+    excuteDelete.style.gridArea = "delete";
+
+
+    deleteDialog.appendChild(alert);
+    deleteDialog.appendChild(cancelDelete);
+    deleteDialog.appendChild(excuteDelete);
+
+
+    return {deleteDialog, deletBtn : excuteDelete, cancelBtn : cancelDelete, alert}
+
+
+}
 
 const createProjectDialog = function(){
-        const dialog = document.createElement("dialog");
-        dialog.style.width = "25vw";
-        dialog.style.border = "none";
-        dialog.style.borderRadius = "40px";
-        dialog.style.backgroundColor = mainWhite()
-        dialog.style.display = "grid";
-        dialog.style.gridTemplate = "1fr /2fr 1fr";
-        dialog.style.alignItems = "center";
-        dialog.style.justifyContent = "center";
+    const dialog = document.createElement("dialog");
+    dialog.style.width = "25vw";
+    dialog.style.border = "none";
+    dialog.style.borderRadius = "40px";
+    dialog.style.backgroundColor = mainWhite()
+    dialog.style.display = "grid";
+    dialog.style.gridTemplate = "1fr /2fr 1fr";
+    dialog.style.alignItems = "center";
+    dialog.style.justifyContent = "center";
     
     
-        const projectName = document.createElement("input");
-        projectName.type = "text";
-        projectName.placeholder= "Project name goes here";
-        projectName.style.width = "90%";
-        projectName.style.justifySelf= "center";
-        projectName.style.border = "none";
-        projectName.style.outline = "none";
-        projectName.style.padding = "10px";
-        projectName.style.borderRadius ="25px 0px 0px 25px";
-        projectName.style.marginLeft = "20%";
+    const projectName = document.createElement("input");
+    projectName.type = "text";
+    projectName.placeholder= "Project name goes here";
+    projectName.style.width = "90%";
+    projectName.style.justifySelf= "center";
+    projectName.style.border = "none";
+    projectName.style.outline = "none";
+    projectName.style.padding = "10px";
+    projectName.style.borderRadius ="25px 0px 0px 25px";
+    projectName.style.marginLeft = "20%";
     
-        const btn = document.createElement("div");
-        btn.innerHTML= "Create"
-        btn.style.backgroundColor = topWhite()
-        btn.style.padding= "10px"
-        btn.style.borderRadius = "0px 25px 25px 0px"
-        btn.style.justifySelf = "center";
-        btn.addEventListener("mouseover", ()=>{
-            btn.style.padding = "11px";
-            btn.style.color = mainWhite()
-            btn.style.backgroundColor = urgentRed;
-        })
-        btn.addEventListener("mouseout", ()=>{
-            btn.style.padding = "10px";
-            btn.style.color = black()
-            btn.style.backgroundColor = topWhite();
-        })
-       
-        dialog.appendChild(projectName);
-        dialog.appendChild(btn)
-        
+    const btn = document.createElement("div");
+    btn.innerHTML= "Create"
+    btn.style.backgroundColor = topWhite()
+    btn.style.padding= "10px"
+    btn.style.borderRadius = "0px 25px 25px 0px"
+    btn.style.justifySelf = "center";
+    btn.addEventListener("mouseover", ()=>{
+        btn.style.padding = "11px";
+        btn.style.color = mainWhite()
+        btn.style.backgroundColor = urgentRed;
+    })
+    btn.addEventListener("mouseout", ()=>{
+        btn.style.padding = "10px";
+        btn.style.color = black()
+        btn.style.backgroundColor = topWhite();
+    })
     
-        return {dialog, projectName, btn};
+    dialog.appendChild(projectName);
+    dialog.appendChild(btn)
+    
+
+    return {dialog, projectName, btn};
 }
 //spliting finctions to variables while calling the function once
+const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
 // _CPD is a pointer to the original function 
@@ -179,5 +232,9 @@ export const staticDom= {
         dialog_CPD : dialog,
         input_CPD  : projectName,
         button_CPD : btn,
+        dialog_dPD : deleteDialog,
+        delete_dBD : deletBtn,
+        cancel_dBD : cancelBtn,
+        alert_dBD  : alert, 
 
     }
