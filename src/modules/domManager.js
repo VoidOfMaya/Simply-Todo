@@ -37,7 +37,7 @@ const initDialogP = function(btnFunction){
 }
 
 
-const initSideBare = function(projects){
+const initSideBare = function(projects, removeFunction){
     //append ti body
     document.body.appendChild(staticDom.side);  
 
@@ -60,7 +60,7 @@ const initSideBare = function(projects){
         staticDom.addProjectBtn.style.fontSize = "18px";
         staticDom.addProjectBtn.style.backgroundColor = black();
     });
-    renderSide(projects);
+    renderSide(projects, removeFunction);
 }
 const renderSide = function(projects, removefunction){
     const root = staticDom.sideRoot;
@@ -154,14 +154,15 @@ const renderSide = function(projects, removefunction){
             delete_dBD.style.background = topWhite();
         })
         delete_dBD.addEventListener("click", ()=>{
-            if(["urgent", "upcoming", "non urgent, home"].includes(project.name) ){
+            if(["urgent", "upcoming", "non urgent", "home"].includes(project.name) ){
                 console.log("can not delet essential manditory projects")
                 return
-            }
+            }else{
             removefunction(project.id);
-            dialog_dPD.close()
-            document.body.removeChild(dialog_dPD);
-            console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
+                dialog_dPD.close()
+                document.body.removeChild(dialog_dPD);
+                console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
+            }
         })
 
 

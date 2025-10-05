@@ -38,12 +38,15 @@ console.log(maxId)
 Project.setStartingId(maxId + 1);
 function initApp(){
   init();
-  initSideBare(projectHandler.showProjects(), projectHandler.addProject.bind(projectHandler));
+  initSideBare(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler));
   initDialogP(projectHandler.addProject.bind(projectHandler));
  
   staticDom.dialog_CPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler))
-  })  
+    renderSide(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler));
+  }) 
+  staticDom.dialog_dPD.addEventListener('close', ()=>{
+    renderSide(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler));
+  }) 
 }
 
 
