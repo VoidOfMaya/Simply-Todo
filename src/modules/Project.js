@@ -11,6 +11,9 @@ class Project{
     static #generateId(){
         return Project.#id++;
     }
+    static setStartingId(start) {
+        Project.#id = start;
+    }
     toJSON(){
         return{
             id : this.Id,

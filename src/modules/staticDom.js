@@ -109,6 +109,8 @@ const createSide = function(){
 
 const createDisplay = function(){
     const display = document.createElement("div");
+    const noProject = document.createElement("div");
+    noProject.innerHTML = " there are no projects selected"
     display.style.backgroundColor = mainWhite();
     display.style.boxShadow = "inset 22px 28px 34px -9px rgba(255, 255, 255, 1)"
     display.style.gridArea = "main";

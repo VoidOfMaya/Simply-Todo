@@ -75,7 +75,8 @@ const renderSide = function(projects){
         btn.style.padding = "10px";
         root.appendChild(btn);
         btn.addEventListener("click", () => {
-            console.log(`Project clicked: ${project.name}`);
+            console.log(`Project clicked: ${JSON.stringify(project)}`);
+
         });
 
         btn.addEventListener("mouseover", () => btn.style.fontSize = "20px");

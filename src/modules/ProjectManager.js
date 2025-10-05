@@ -54,7 +54,7 @@ class ProjectManager{
         const projects = this.data.load("proj") || [];
         const result = [];
         projects.forEach(project => {
-            result.push({ name: project.name, id: project.ID });
+            result.push({ name: project.name, id: project.id });
         });
         return result;
     }

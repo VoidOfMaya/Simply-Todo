@@ -1,10 +1,10 @@
 
 import { ProjectManager } from "./modules/ProjectManager";
-import { TaskManager } from "./modules/TaskManager";
-//import {renderSide, projectDialog } from "./modules/DOM";
+import { TaskManager } from "./modules/TaskManager"; 
 import { init, initDialogP, initSideBare , renderSide} from "./modules/domManager";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { staticDom } from "./modules/staticDom";
+import { Project } from "./modules/Project";
 
 console.log(`project is live`);
 /* additional consideratuibs
@@ -14,13 +14,6 @@ console.log(`project is live`);
 
 const projectHandler = new ProjectManager();
 const taskHandler = new TaskManager();
-
-init();
-initSideBare(projectHandler.showProjects(), projectHandler.addProject.bind(projectHandler));
-initDialogP(projectHandler.addProject.bind(projectHandler));
-staticDom.dialog_CPD.addEventListener('close', ()=>{
-  renderSide(projectHandler.showProjects())
-})
 /*demo projects */
 if (projectHandler.data.load("proj") === null){
   projectHandler.addProject(`urgent`);
@@ -39,21 +32,22 @@ if(taskHandler.data.load("tasks")=== null){
   taskHandler.addTask(`fix toilet`,'', `28-06-2025`, '', '2');
 
 }
-//alocate task to relavent project
-const projectOne = projectHandler.getProject(0);
-const tastOne = taskHandler.getTasks(0);
-projectHandler.getProject(1);
-//projectHandler.getTasks(1);
-projectHandler.getProject(2);
-//projectHandler.getTasks(2);
-projectHandler.getProject(3);
-//projectHandler.getTasks(3);
-//renderSide(projectHandler.showProjects(), projectHandler.addProject.bind(projectHandler));
+const savedProjects = projectHandler.showProjects();
+const maxId = savedProjects.reduce((max, proj) => Math.max(max, proj.id), -1);
+console.log(maxId)
+Project.setStartingId(maxId + 1);
+function initApp(){
+  init();
+  initSideBare(projectHandler.showProjects(), projectHandler.addProject.bind(projectHandler));
+  initDialogP(projectHandler.addProject.bind(projectHandler));
+ 
+  staticDom.dialog_CPD.addEventListener('close', ()=>{
+    renderSide(projectHandler.showProjects())
+  })  
+}
 
-console.log(projectOne);
-console.log(tastOne);
 
-
+initApp()
 
 
 
