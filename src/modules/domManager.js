@@ -1,4 +1,4 @@
-import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./colors"; // topwhite, mainwhite, balck
+import { topWhite,mainWhite, black ,green, urgentRed, gray } from "./colors"; // topwhite, mainwhite, balck
 import { staticDom } from "./staticDom";
 
 let dialogInstance =null;
@@ -26,14 +26,11 @@ const init = function(defaultProject){
 const populatetMain= function(project){
     const {head, main, displayTitle, tasksDisplay} = staticDom
 
-        displayTitle.innerHTML = "";          
-        displayTitle.innerText= project.name
-        displayTitle.style.justifySelf = "center";
-        displayTitle.style.alignSelf = "center";
-  
-   
-    
-
+    displayTitle.innerHTML = "";          
+    displayTitle.innerText= project.name
+    displayTitle.style.justifySelf = "center";
+    displayTitle.style.alignSelf = "center";
+    //task display    
 }
 const initDialogP = function(btnFunction){
     //extracting out dialog relevant variables from staticDom
@@ -149,13 +146,17 @@ const renderSide = function(projects, removefunction){
 
         name.textContent = project.name;
         name.style.gridArea ="name";
+        name.style.alignContent ="center"
+        name.style.paddingLeft = "5px"
  
         remove.textContent = '';
         remove.style.gridArea = "remove"
+        remove.style.alignContent ="center"
+        remove.style.textAlign = "center"
        
         btn.style.fontSize = "18px";
         btn.style.color = mainWhite();
-        btn.style.padding = "10px 0px";
+        btn.style.height = "40px";
         btn.appendChild(remove);
         btn.appendChild(name);
         root.appendChild(btn);
@@ -164,18 +165,20 @@ const renderSide = function(projects, removefunction){
         
         btn.addEventListener("click", ()=>{
             populatetMain(project);
-            console.log(`executed display switch to ${project.name}`);
+            //console.log(`executed display switch to ${project.name}`);
         });
             
         
         btn.addEventListener("mouseover", () => {
             btn.style.fontSize = "20px"
             remove.style.background = urgentRed();
+            name.style.background = gray();
+            
         });
         btn.addEventListener("mouseout", () => {
             btn.style.fontSize = "18px"
             remove.style.background = "none";
-            btn.style.gap = "5px"
+            name.style.background = black();
         });
         //delet event handeling
         remove.addEventListener("mouseover", ()=>{           

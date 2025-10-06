@@ -85,7 +85,7 @@ const createSide = function(){
     projectList.style.display = "flex";             
     projectList.style.flexDirection = "column";     
     projectList.style.gap = "5px";                  
-    projectList.style.padding = "5px";              
+    projectList.style.padding = " px 5px 5px 5px";              
     projectList.style.boxSizing = "border-box";
 
     // add new project
@@ -110,9 +110,11 @@ const createSide = function(){
 const createDisplay = function(){
     const display = document.createElement("div");
     const mainContainer = document.createElement("div");
-    const displayTitle = document.createElement("h1");
+    const displayTitle = document.createElement("div");
     const tasksDisplay = document.createElement("div")  
 
+    displayTitle.style.color = black();
+    displayTitle.style.fontSize = "38px";
     mainContainer.id = "container"
     mainContainer.style.width = "100%"
     mainContainer.style.height = "100%"
@@ -156,7 +158,7 @@ const deleteProjectDialog = function(deleteFunction, id){
 
     alert.innerText= `placeholder text`;
     alert.style.padding = "0px 5px";
-    alert.style.justifySelf = "center";
+    alert.style.textAlign = "center";
     alert.style.gridArea ="message";
 
     cancelDelete.innerHTML = "<div>Cancel</div>";

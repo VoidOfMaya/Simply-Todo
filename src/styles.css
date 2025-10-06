@@ -1,3 +1,10 @@
+body{
+  fontFamily : "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
+  display :grid;
+  height :100vh;
+  margin :0px;
+}
+
 input[type="text"]:focus,
 textarea:focus {
   border: 2px solid #007BFF; /* Example: blue border */

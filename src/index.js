@@ -1,4 +1,5 @@
 
+import "./styles.css";
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager"; 
 import { init, initDialogP, initMain, initSideBare , renderSide} from "./modules/domManager";
