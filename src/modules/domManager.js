@@ -79,6 +79,18 @@ const renderSide = function(projects, removefunction){
     const root = staticDom.sideRoot;
     root.innerHTML = "";
 
+    const {dialog_dPD, delete_dBD, cancel_dBD, alert_dBD} = staticDom;
+    //internal delet dialog handelling
+    const cancelClickHandler= function(){
+        dialog_dPD.close()
+        if(document.body.contains(dialog_dPD)){
+            document.body.removeChild(dialog_dPD);
+            cancel_dBD.removeEventListener('click', cancelClickHandler);
+        }
+        console.log("project deletion- cancelled")
+    }
+    
+    
     projects.forEach((project) => {
         if (["urgent", "upcoming", "non urgent"].includes(project.name)) return;
 
@@ -86,7 +98,6 @@ const renderSide = function(projects, removefunction){
         const btn = document.createElement("div");
         const name = document.createElement("div");
         const remove = document.createElement("div")
-
         btn.style.display = "grid";
         btn.style.gridTemplateColumns = "1fr 19fr";
         btn.style.gridTemplateAreas = `"remove name"`
@@ -123,7 +134,7 @@ const renderSide = function(projects, removefunction){
             btn.style.gap = "5px"
         });
         //delet event handeling
-        const {dialog_dPD, delete_dBD, cancel_dBD, alert_dBD} = staticDom;
+
         remove.addEventListener("mouseover", ()=>{
             
             remove.textContent = 'delete';
@@ -141,14 +152,7 @@ const renderSide = function(projects, removefunction){
             dialog_dPD.showModal();
             alert_dBD.innerHTML = `this action will delete your "${project.name}" Project !`
         })
-        //internal delet dialog handelling
-        const cancelClickHandler= function(){
-            dialog_dPD.close()
-            if(document.body.contains(dialog_dPD)){
-                document.body.removeChild(dialog_dPD);
-            }
-            console.log("project deletion- cancelled")
-        }
+
         // cancel btn
         cancel_dBD.addEventListener("mouseover", ()=>{
             cancel_dBD.style.background = green();
@@ -157,7 +161,7 @@ const renderSide = function(projects, removefunction){
             cancel_dBD.style.background = topWhite();
         })
         //handles event listener stacking
-        cancel_dBD.removeEventListener('click', cancelClickHandler);
+        //cancel_dBD.removeEventListener('click', cancelClickHandler);
         cancel_dBD.addEventListener('click', cancelClickHandler);
         //delete btn
         delete_dBD.addEventListener("mouseover", ()=>{
