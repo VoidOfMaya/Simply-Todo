@@ -1,7 +1,7 @@
 
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager"; 
-import { init, initDialogP, initSideBare , renderSide} from "./modules/domManager";
+import { init, initDialogP, initMain, initSideBare , renderSide} from "./modules/domManager";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { staticDom } from "./modules/staticDom";
 import { Project } from "./modules/Project";
@@ -37,7 +37,7 @@ const maxId = savedProjects.reduce((max, proj) => Math.max(max, proj.id), -1);
 console.log(maxId)
 Project.setStartingId(maxId + 1);
 function initApp(){
-  init();
+  init(projectHandler.getProject(3));
   initSideBare(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler));
   initDialogP(projectHandler.addProject.bind(projectHandler));
  

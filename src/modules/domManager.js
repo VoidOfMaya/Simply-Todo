@@ -2,7 +2,9 @@ import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./c
 import { staticDom } from "./staticDom";
 
 let dialogInstance =null;
-const init = function(){
+
+const init = function(defaultProject){
+    const {head, main, tasksDisplay} = staticDom
     const body = document.querySelector("body");
     body.style.fontFamily = "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
     body.style.display = "grid";
@@ -12,10 +14,20 @@ const init = function(){
     body.style.gridTemplateAreas = `
     "top top"
     "side main"
-    `
-    body.appendChild(staticDom.head);
-    body.appendChild(staticDom.main);
+    ` 
+    populatetMain(defaultProject);
+    body.appendChild(head);
+    body.appendChild(main);
     return body;   
+
+}
+const populatetMain= function(defaultProject){
+    const {head, main, displayTitle, tasksDisplay} = staticDom
+    if(displayTitle.innerText === ""){            
+        displayTitle.innerText= defaultProject.name
+        displayTitle.style.justifySelf = "center";
+        displayTitle.style.alignSelf = "center";
+    }
 
 }
 const initDialogP = function(btnFunction){
@@ -62,6 +74,7 @@ const initSideBare = function(projects, removeFunction){
     });
     renderSide(projects, removeFunction);
 }
+
 const renderSide = function(projects, removefunction){
     const root = staticDom.sideRoot;
     root.innerHTML = "";
@@ -169,7 +182,6 @@ const renderSide = function(projects, removefunction){
         
     });
 }
-
 export{
     init,
     initDialogP,

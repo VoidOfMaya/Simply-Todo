@@ -109,15 +109,29 @@ const createSide = function(){
 
 const createDisplay = function(){
     const display = document.createElement("div");
-    const noProject = document.createElement("div");
-    noProject.innerHTML = " there are no projects selected"
+    const mainContainer = document.createElement("div");
+    const displayTitle = document.createElement("h1");
+    const tasksDisplay = document.createElement("div")  
+
+    mainContainer.id = "container"
+    mainContainer.style.width = "100%"
+    mainContainer.style.height = "100%"
+    mainContainer.style.display = "grid";
+    mainContainer.style.gridTemplateRows = "1fr 9fr";
+
+    display.id = "Display"
     display.style.backgroundColor = mainWhite();
     display.style.boxShadow = "inset 22px 28px 34px -9px rgba(255, 255, 255, 1)"
     display.style.gridArea = "main";
+
     mainRoot = document.createElement("div");
+
+    mainContainer.appendChild(displayTitle);
+    mainContainer.appendChild(tasksDisplay);    
+    display.appendChild(mainContainer);
     display.appendChild(mainRoot);
 
-    return display;
+    return {display, mainContainer, displayTitle , tasksDisplay};
 }
 const deleteProjectDialog = function(deleteFunction, id){
 
@@ -222,10 +236,14 @@ const createProjectDialog = function(){
 const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
+const {display, mainContainer, displayTitle, tasksDisplay} = createDisplay()
 // _CPD is a pointer to the original function 
 export const staticDom= {
         head : createHeader(),
-        main : createDisplay(),
+        main : display,
+        mainContainer,
+        displayTitle,
+        tasksDisplay,
         side,
         sideRoot: projectList,
         addProjectBtn: addProject,
