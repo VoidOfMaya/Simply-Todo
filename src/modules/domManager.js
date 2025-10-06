@@ -2,6 +2,8 @@ import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./c
 import { staticDom } from "./staticDom";
 
 let dialogInstance =null;
+let homeProject = null;
+let currentProjectToDelete = null;
 
 const init = function(defaultProject){
     const {head, main, tasksDisplay} = staticDom
@@ -21,13 +23,16 @@ const init = function(defaultProject){
     return body;   
 
 }
-const populatetMain= function(defaultProject){
+const populatetMain= function(project){
     const {head, main, displayTitle, tasksDisplay} = staticDom
-    if(displayTitle.innerText === ""){            
-        displayTitle.innerText= defaultProject.name
+
+        displayTitle.innerHTML = "";          
+        displayTitle.innerText= project.name
         displayTitle.style.justifySelf = "center";
         displayTitle.style.alignSelf = "center";
-    }
+  
+   
+    
 
 }
 const initDialogP = function(btnFunction){
@@ -74,43 +79,80 @@ const initSideBare = function(projects, removeFunction){
     });
     renderSide(projects, removeFunction);
 }
+//event listener manager
+let dialogListenerInit = false;
 
+const setupdialogListeners = function (removefunction){
+    const { dialog_dPD, delete_dBD, cancel_dBD, alert_dBD } = staticDom;
+   if(dialogListenerInit) return
+    // cancell event handling    
+    cancel_dBD.addEventListener('click', ()=>{
+    dialog_dPD.close();
+    if(document.body.contains(dialog_dPD)){
+        document.body.removeChild(dialog_dPD);
+    }
+    console.log("project deletion- cancelled")
+    });
+    cancel_dBD.addEventListener("mouseover", () => {
+        cancel_dBD.style.background = green();
+    });
+    cancel_dBD.addEventListener("mouseout", () => {
+        cancel_dBD.style.background = topWhite();
+    });
+    //delete event handelling
+
+    delete_dBD.addEventListener("mouseover", () => {
+        delete_dBD.style.background = urgentRed();
+    });
+    delete_dBD.addEventListener("mouseout", () => {
+        delete_dBD.style.background = topWhite();
+    });
+    delete_dBD.addEventListener('click', ()=>{
+        if(!currentProjectToDelete) return;
+        const project = currentProjectToDelete;
+        if(["urgent", "upcoming", "non urgent", "home"].includes(project.name) ){
+            console.log("can not delet essential manditory projects")
+            return;
+        }
+        removefunction(project.id);
+        dialog_dPD.close()
+        if (document.body.contains(dialog_dPD)) {
+            document.body.removeChild(dialog_dPD);
+        }
+        populatetMain(homeProject);
+        console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
+        currentProjectToDelete = null;
+
+    });
+    dialogListenerInit = true;
+}
+
+  
 const renderSide = function(projects, removefunction){
     const root = staticDom.sideRoot;
+    const { dialog_dPD, delete_dBD, alert_dBD } = staticDom;
     root.innerHTML = "";
 
-    const {dialog_dPD, delete_dBD, cancel_dBD, alert_dBD} = staticDom;
-    //internal delet dialog handelling
-    const cancelClickHandler= function(){
-        dialog_dPD.close()
-        if(document.body.contains(dialog_dPD)){
-            document.body.removeChild(dialog_dPD);
-            cancel_dBD.removeEventListener('click', cancelClickHandler);
-        }
-        console.log("project deletion- cancelled")
-    }
-    
-    
+    setupdialogListeners(removefunction);
+    homeProject = projects.find(p => p.name === "home");
+
     projects.forEach((project) => {
         if (["urgent", "upcoming", "non urgent"].includes(project.name)) return;
 
-        
         const btn = document.createElement("div");
         const name = document.createElement("div");
-        const remove = document.createElement("div")
+        const remove = document.createElement("div");
+
         btn.style.display = "grid";
         btn.style.gridTemplateColumns = "1fr 19fr";
-        btn.style.gridTemplateAreas = `"remove name"`
+        btn.style.gridTemplateAreas = `"remove name"`;
 
         name.textContent = project.name;
         name.style.gridArea ="name";
-
-        
+ 
         remove.textContent = '';
         remove.style.gridArea = "remove"
-
-
-
+       
         btn.style.fontSize = "18px";
         btn.style.color = mainWhite();
         btn.style.padding = "10px 0px";
@@ -118,12 +160,14 @@ const renderSide = function(projects, removefunction){
         btn.appendChild(name);
         root.appendChild(btn);
 
-        //general button event handeling        
-        btn.addEventListener("click", () => {
-            console.log(`Project clicked: ${JSON.stringify(project)}`);
-
+        //general button event handeling
+        
+        btn.addEventListener("click", ()=>{
+            populatetMain(project);
+            console.log(`executed display switch to ${project.name}`);
         });
-
+            
+        
         btn.addEventListener("mouseover", () => {
             btn.style.fontSize = "20px"
             remove.style.background = urgentRed();
@@ -134,56 +178,25 @@ const renderSide = function(projects, removefunction){
             btn.style.gap = "5px"
         });
         //delet event handeling
-
-        remove.addEventListener("mouseover", ()=>{
-            
-            remove.textContent = 'delete';
-            
+        remove.addEventListener("mouseover", ()=>{           
+            remove.textContent = 'delete'; 
             btn.style.gridTemplateColumns = "4fr 6fr";
-
         })
         remove.addEventListener("mouseout", ()=>{
             
             remove.textContent = '';
             btn.style.gridTemplateColumns = "1fr 19fr";
         })
+        //delet action remove model
         remove.addEventListener("click", ()=>{
+
+            currentProjectToDelete = project;
             document.body.appendChild(dialog_dPD);
             dialog_dPD.showModal();
             alert_dBD.innerHTML = `this action will delete your "${project.name}" Project !`
-        })
+            
 
-        // cancel btn
-        cancel_dBD.addEventListener("mouseover", ()=>{
-            cancel_dBD.style.background = green();
-        })
-        cancel_dBD.addEventListener("mouseout", ()=>{
-            cancel_dBD.style.background = topWhite();
-        })
-        //handles event listener stacking
-        //cancel_dBD.removeEventListener('click', cancelClickHandler);
-        cancel_dBD.addEventListener('click', cancelClickHandler);
-        //delete btn
-        delete_dBD.addEventListener("mouseover", ()=>{
-            delete_dBD.style.background = urgentRed();
-        })
-        delete_dBD.addEventListener("mouseout", ()=>{
-            delete_dBD.style.background = topWhite();
-        })
-        delete_dBD.addEventListener("click", ()=>{
-            if(["urgent", "upcoming", "non urgent", "home"].includes(project.name) ){
-                console.log("can not delet essential manditory projects")
-                return
-            }else{
-            removefunction(project.id);
-                dialog_dPD.close()
-                document.body.removeChild(dialog_dPD);
-                console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
-            }
-        })
-
-
-        
+        })        
     });
 }
 export{
