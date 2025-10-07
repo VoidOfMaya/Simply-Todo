@@ -24,7 +24,7 @@ const init = function(defaultProject){
 
 }
 const populatetMain= function(project){
-    const {head, main, displayTitle, tasksDisplay} = staticDom
+    const {head, main, displayTitle, tasksDisplay, addTaskBtn} = staticDom
 
     displayTitle.innerHTML = "";          
     displayTitle.innerText= project.name
@@ -49,7 +49,6 @@ const initDialogP = function(btnFunction){
     })
 
 }
-
 
 const initSideBare = function(projects, removeFunction){
     //append ti body

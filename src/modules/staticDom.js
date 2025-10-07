@@ -111,29 +111,41 @@ const createDisplay = function(){
     const display = document.createElement("div");
     const mainContainer = document.createElement("div");
     const displayTitle = document.createElement("div");
-    const tasksDisplay = document.createElement("div")  
-
-    displayTitle.style.color = black();
-    displayTitle.style.fontSize = "38px";
-    mainContainer.id = "container"
-    mainContainer.style.width = "100%"
-    mainContainer.style.height = "100%"
-    mainContainer.style.display = "grid";
-    mainContainer.style.gridTemplateRows = "1fr 9fr";
+    const tasksDisplay = document.createElement("div") ;
+    const addTaskBtn = document.createElement("div"); 
 
     display.id = "Display"
     display.style.backgroundColor = mainWhite();
     display.style.boxShadow = "inset 22px 28px 34px -9px rgba(255, 255, 255, 1)"
-    display.style.gridArea = "main";
+    display.style.gridArea = "main";    
+    
+    mainContainer.id = "container"
+    mainContainer.style.width = "100%"
+    mainContainer.style.height = "100%"
+    mainContainer.style.display = "grid";
+    mainContainer.style.gridTemplateRows = "1fr 9fr 1fr "; 
+    mainContainer.style.gridTemplateAreas = `"project-title"
+                                             "task-display"
+                                             "task-btn"`   
+   
+    displayTitle.style.color = black();
+    displayTitle.style.fontSize = "38px";
+
+    displayTitle.style.gridArea = "project-title"   
+   
+    tasksDisplay.style.gridArea= "task-display"
+    
+    addTaskBtn.style.gridArea ="task-btn"
 
     mainRoot = document.createElement("div");
 
     mainContainer.appendChild(displayTitle);
-    mainContainer.appendChild(tasksDisplay);    
+    mainContainer.appendChild(tasksDisplay); 
+    mainContainer.appendChild(addTaskBtn);   
     display.appendChild(mainContainer);
     display.appendChild(mainRoot);
 
-    return {display, mainContainer, displayTitle , tasksDisplay};
+    return {display, mainContainer, displayTitle , tasksDisplay, addTaskBtn};
 }
 const deleteProjectDialog = function(deleteFunction, id){
 
@@ -187,6 +199,9 @@ const deleteProjectDialog = function(deleteFunction, id){
 
 
 }
+const createTaskCard = function (){
+
+}
 
 const createProjectDialog = function(){
     const dialog = document.createElement("dialog");
@@ -238,7 +253,7 @@ const createProjectDialog = function(){
 const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
-const {display, mainContainer, displayTitle, tasksDisplay} = createDisplay()
+const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn} = createDisplay()
 // _CPD is a pointer to the original function 
 export const staticDom= {
         head : createHeader(),
@@ -246,6 +261,7 @@ export const staticDom= {
         mainContainer,
         displayTitle,
         tasksDisplay,
+        addTaskBtn,
         side,
         sideRoot: projectList,
         addProjectBtn: addProject,
