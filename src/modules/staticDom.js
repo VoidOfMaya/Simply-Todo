@@ -112,29 +112,39 @@ const createDisplay = function(){
     const display = document.createElement("div");
     const mainContainer = document.createElement("div");
     const displayTitle = document.createElement("div");
-    const tasksDisplay = document.createElement("div") ;
+    const tasksDisplay = document.createElement("div");
     const addTaskBtn = document.createElement("div"); 
 
-    display.id = "Display"
+    display.id = "Display";
     display.style.backgroundColor = mainWhite();
-    display.style.boxShadow = "inset 22px 28px 34px -9px rgba(255, 255, 255, 1)"
+    display.style.boxShadow = "inset 22px 28px 34px -9px rgba(255, 255, 255, 1)";
     display.style.gridArea = "main";    
     
-    mainContainer.id = "container"
-    mainContainer.style.width = "100%"
-    mainContainer.style.height = "100%"
+    mainContainer.id = "container";
+    mainContainer.style.width = "100%";
+    mainContainer.style.height = "100%";
     mainContainer.style.display = "grid";
     mainContainer.style.gridTemplateRows = "1fr 9fr 1fr "; 
     mainContainer.style.gridTemplateAreas = `"project-title"
                                              "task-display"
-                                             "task-btn"`   
+                                             "task-btn"` ; 
    
     displayTitle.style.color = black();
     displayTitle.style.fontSize = "38px";
+    displayTitle.style.gridArea = "project-title" ;
+    displayTitle.style.justifySelf = "center";
+    displayTitle.style.alignSelf = "center";
 
-    displayTitle.style.gridArea = "project-title"   
-    tasksDisplay.style.gridArea= "task-display"
-    addTaskBtn.style.gridArea ="task-btn"
+    tasksDisplay.style.gridArea= "task-display";
+
+    addTaskBtn.style.gridArea ="task-btn";
+    addTaskBtn.innerHTML= `<i class="fa-solid fa-plus"></i>`;
+    addTaskBtn.style.justifySelf = "center";
+    addTaskBtn.style.alignSelf = "center";
+    addTaskBtn.style.color = topWhite();
+    addTaskBtn.style.padding = "10px";
+    addTaskBtn.style.fontSize = "20px";
+    addTaskBtn.style.borderRadius = "10px"
 
     mainRoot = document.createElement("div");
 

@@ -16,10 +16,7 @@ console.log(`project is live`);
 const projectHandler = new ProjectManager();
 const taskHandler = new TaskManager();
 
-// passing binded arguments
-const projectAdd = projectHandler.deletProject.bind(projectHandler);
-const projectDelete = projectHandler.deletProject.bind(projectHandler)
-const tasksGet = taskHandler.getTasks.bind(taskHandler);
+
 /*demo projects */
 if (projectHandler.data.load("proj") === null){
   projectHandler.addProject(`urgent`);
@@ -36,22 +33,32 @@ if(taskHandler.data.load("tasks")=== null){
   taskHandler.addTask(`walk dog`,'', `28-06-2025`, '', '0');
   taskHandler.addTask(`go to birthday`,'', `28-06-2025`, '', '1');
   taskHandler.addTask(`fix toilet`,'', `28-06-2025`, '', '2');
+  taskHandler.addTask(`test task`,'', `28-06-2026`, '', '3');
 
 }
+
+// passing binded arguments
+const projectGet = projectHandler.getProject.bind(projectHandler);
+const projectAdd = projectHandler.addProject.bind(projectHandler);
+const projectDelete = projectHandler.deletProject.bind(projectHandler)
+const tasksGet = taskHandler.getTasks.bind(taskHandler);
+const taskCreate = taskHandler.addTask.bind(taskHandler);
+
 const savedProjects = projectHandler.showProjects();
 const maxId = savedProjects.reduce((max, proj) => Math.max(max, proj.id), -1);
 console.log(maxId)
 Project.setStartingId(maxId + 1);
+
 function initApp(){
-  init(projectHandler.getProject(3));
-  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet);
+  init(projectHandler.getProject(3), tasksGet, taskCreate,);
+  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet, taskCreate, projectGet);
   initDialogP(projectAdd);
  
   staticDom.dialog_CPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet);
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, taskCreate, projectGet);
   }) 
   staticDom.dialog_dPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet);
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, taskCreate, projectGet);
   }) 
 }
 

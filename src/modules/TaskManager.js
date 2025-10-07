@@ -19,11 +19,18 @@ class TaskManager{
     }
     //read
     getTasks(id){
-        
-        if(this.data.load("proj")[id] === undefined){
-            console.log('your trying to get tasks from a project that doest exist')
+        const project = this.data.load("proj");
+        const returnedProject = project.find(p =>p.id === id)
+        if (!returnedProject){
+            console.log(`your trying to get tasks from a project that doest exist at id ${id}`)
             return
-        }
+        };
+
+        /*console.log(` gettasks for project id ${project.id}, from the following projects\n${project}`)
+        if(this.data.load("proj")[id] === undefined){
+            console.log(`your trying to get tasks from a project that doest exist at id ${id}`)
+            return
+        }*/
         const taskList = this.data.load("tasks");
         const returnValue =  taskList.filter(task => String(task.projectId) === String(id));
         return returnValue;

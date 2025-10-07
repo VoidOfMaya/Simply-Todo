@@ -23,11 +23,13 @@ class ProjectManager{
     //read
     getProject(id){
         const projectList = this.data.load("proj");
-        if(projectList[id] === undefined){
+        const returnedProject = projectList.find(p =>p.id === id)
+
+        if(!returnedProject){
             console.log(`project at id: ${id}, doesnt exist`);
 
         }else{
-            return projectList[id]
+            return returnedProject
         }
     }
     //update

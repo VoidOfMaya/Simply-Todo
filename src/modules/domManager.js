@@ -4,8 +4,11 @@ import { staticDom } from "./staticDom";
 let dialogInstance =null;
 let homeProject = null;
 let currentProjectToDelete = null;
+let sideDialogListenerInit = false;
+let taskDialogListenerInit = false;
 
-const init = function(defaultProject){
+//initialization
+const init = function(defaultProject, getTasks, createTask){
     const {head, main, tasksDisplay} = staticDom
     const body = document.querySelector("body");
     body.style.fontFamily = "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
@@ -17,40 +20,14 @@ const init = function(defaultProject){
     "top top"
     "side main"
     ` 
-    populatetMain(defaultProject);
+    console.log(`init  function : default project- ${defaultProject.name}`)
+    populatetMain(defaultProject, getTasks, createTask);
     body.appendChild(head);
     body.appendChild(main);
     return body;   
 
 }
-const populatetMain= function(project){
-    const {head, main, displayTitle, tasksDisplay, addTaskBtn} = staticDom
-
-    displayTitle.innerHTML = "";          
-    displayTitle.innerText= project.name
-    displayTitle.style.justifySelf = "center";
-    displayTitle.style.alignSelf = "center";
-    //task display    
-}
-const initDialogP = function(btnFunction){
-    //extracting out dialog relevant variables from staticDom
-    const{dialog_CPD, input_CPD, button_CPD} = staticDom;
-
-    button_CPD.addEventListener("click",()=>{
-        const name = input_CPD.value.trim();
-        if (name === ""){
-            alert("please enter a project name");
-            return            
-        }
-        btnFunction(name);
-        dialog_CPD.close();
-        document.body.removeChild(dialogInstance);        
-        
-    })
-
-}
-
-const initSideBare = function(projects, removeFunction, getTasks){
+const initSideBare = function(projects, removeFunction, getTasks, taskCreate, getProject){
     //append ti body
     document.body.appendChild(staticDom.side);  
 
@@ -73,14 +50,13 @@ const initSideBare = function(projects, removeFunction, getTasks){
         staticDom.addProjectBtn.style.fontSize = "18px";
         staticDom.addProjectBtn.style.backgroundColor = black();
     });
-    renderSide(projects, removeFunction, getTasks);
+    renderSide(projects, removeFunction, getTasks, taskCreate, getProject);
 }
-//event listener manager
-let dialogListenerInit = false;
+//Dialog eventlistener inatance manager
 
-const setupdialogListeners = function (removefunction){
-    const { dialog_dPD, delete_dBD, cancel_dBD, alert_dBD } = staticDom;
-   if(dialogListenerInit) return
+const setupSidedialogListeners = function (removefunction, getTasks, createTask){
+    const { dialog_dPD, delete_dBD, cancel_dBD } = staticDom;
+    if(sideDialogListenerInit) return
     // cancell event handling    
     cancel_dBD.addEventListener('click', ()=>{
     dialog_dPD.close();
@@ -96,7 +72,6 @@ const setupdialogListeners = function (removefunction){
         cancel_dBD.style.background = topWhite();
     });
     //delete event handelling
-
     delete_dBD.addEventListener("mouseover", () => {
         delete_dBD.style.background = urgentRed();
     });
@@ -108,6 +83,10 @@ const setupdialogListeners = function (removefunction){
         const project = currentProjectToDelete;
         if(["urgent", "upcoming", "non urgent", "home"].includes(project.name) ){
             console.log("can not delet essential manditory projects")
+            dialog_dPD.close();
+            if (document.body.contains(dialog_dPD)) {
+                document.body.removeChild(dialog_dPD);
+            }
             return;
         }
         removefunction(project.id);
@@ -115,25 +94,72 @@ const setupdialogListeners = function (removefunction){
         if (document.body.contains(dialog_dPD)) {
             document.body.removeChild(dialog_dPD);
         }
-        populatetMain(homeProject);
+        populatetMain(homeProject, getTasks, createTask);
         console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
         currentProjectToDelete = null;
 
     });
-    dialogListenerInit = true;
+    sideDialogListenerInit = true;
 }
 
-  
-const renderSide = function(projects, removefunction, getTasks){
+const taskDialogEventHandler = function(project, createTask){
+    const {addTaskBtn} = staticDom;
+    if(taskDialogListenerInit) return;
+    addTaskBtn.addEventListener('click', ()=>{
+        console.log('task creation button triggered')
+    })
+    taskDialogListenerInit = true;
+}
+//display management takes: 1project , gettask function instance, create task function for triggering dialog
+const populatetMain= function(project, getTasks, createTask){
+    const {head, main, displayTitle, tasksDisplay, addTaskBtn} = staticDom
+    console.log(`populating ${project.name} initializing at id ${project.id}`);
+    //for intialization
+    console.log(getTasks(project.id));
+    taskDialogEventHandler(project, createTask);
+
+    displayTitle.innerHTML = "";          
+    displayTitle.innerText= project.name;
+
+    addTaskBtn.addEventListener('mouseover',()=>{
+        addTaskBtn.style.color = black();
+        addTaskBtn.style.background = topWhite();
+    });
+    addTaskBtn.addEventListener('mouseout',()=>{
+        addTaskBtn.style.color = topWhite();
+        addTaskBtn.style.background = mainWhite();
+    });
+    //task display  
+    console.log(`populate ${project.name} finished`);  
+}
+const initDialogP = function(btnFunction){
+    //extracting out dialog relevant variables from staticDom
+    const{dialog_CPD, input_CPD, button_CPD} = staticDom;
+
+    button_CPD.addEventListener("click",()=>{
+        const name = input_CPD.value.trim();
+        if (name === ""){
+            alert("please enter a project name");
+            return            
+        }
+        btnFunction(name);
+        dialog_CPD.close();
+        document.body.removeChild(dialogInstance);        
+        
+    })
+
+}  
+const renderSide = function(projects, removefunction, getTasks, createTask, getProjectById){
     const root = staticDom.sideRoot;
     const { dialog_dPD, delete_dBD, alert_dBD } = staticDom;
-    const { projBtn: btn , projName: name , projRemove: remove} = staticDom
     root.innerHTML = "";
 
-    setupdialogListeners(removefunction);
+    setupSidedialogListeners(removefunction, getTasks, createTask);
     homeProject = projects.find(p => p.name === "home");
 
     projects.forEach((project) => {
+
+        const projectId = project.id;
         if (["urgent", "upcoming", "non urgent"].includes(project.name)) return;
 
         const btn = document.createElement("div");
@@ -163,33 +189,43 @@ const renderSide = function(projects, removefunction, getTasks){
 
         //general button event handeling
         
-        btn.addEventListener("click", ()=>{
-            populatetMain(project);
-            console.log(getTasks(project.id));
-            //console.log(`executed display switch to ${project.name}`);
+        name.addEventListener("click", ()=>{
+            const freshProject = getProjectById(projectId)
+            if(!freshProject){
+                console.log(`youre tryinh to view project ${project.name}, at id: ${freshProject}`)
+                alert("selected project no longer exists."); 
+                
+            }
+            populatetMain(freshProject, getTasks, createTask);
+
         });
             
         
-        btn.addEventListener("mouseover", () => {
-            btn.style.fontSize = "20px"
+        name.addEventListener("mouseover", () => {
+            name.style.fontSize = "20px"
             remove.style.background = urgentRed();
             name.style.background = gray();
             
         });
-        btn.addEventListener("mouseout", () => {
-            btn.style.fontSize = "18px"
+        name.addEventListener("mouseout", () => {
+            name.style.fontSize = "18px"
             remove.style.background = "none";
             name.style.background = black();
         });
         //delet event handeling
         remove.addEventListener("mouseover", ()=>{           
             remove.textContent = 'delete'; 
-            btn.style.gridTemplateColumns = "4fr 6fr";
+            name.style.gridTemplateColumns = "4fr 6fr";
+            remove.style.background = urgentRed();
+            name.style.background = gray();
+            
         })
         remove.addEventListener("mouseout", ()=>{
             
             remove.textContent = '';
-            btn.style.gridTemplateColumns = "1fr 19fr";
+            name.style.gridTemplateColumns = "1fr 19fr";
+            remove.style.background = black();
+            name.style.background = black();
         })
         //delet action remove model
         remove.addEventListener("click", ()=>{
@@ -199,7 +235,6 @@ const renderSide = function(projects, removefunction, getTasks){
             dialog_dPD.showModal();
             alert_dBD.innerHTML = `this action will delete your "${project.name}" Project !`
             
-
         })        
     });
 }
