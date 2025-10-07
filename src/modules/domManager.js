@@ -8,7 +8,7 @@ let sideDialogListenerInit = false;
 let taskDialogListenerInit = false;
 
 //initialization
-const init = function(defaultProject, getTasks, createTask){
+const init = function(defaultProject, tasks, createTask){
     const {head, main, tasksDisplay} = staticDom
     const body = document.querySelector("body");
     body.style.fontFamily = "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
@@ -21,13 +21,13 @@ const init = function(defaultProject, getTasks, createTask){
     "side main"
     ` 
     console.log(`init  function : default project- ${defaultProject.name}`)
-    populatetMain(defaultProject, getTasks, createTask);
+    populatetMain(defaultProject, tasks, createTask);
     body.appendChild(head);
     body.appendChild(main);
     return body;   
 
 }
-const initSideBare = function(projects, removeFunction, getTasks, taskCreate, getProject){
+const initSideBare = function(projects, removeFunction, tasks, taskCreate, getProject){
     //append ti body
     document.body.appendChild(staticDom.side);  
 
@@ -50,11 +50,11 @@ const initSideBare = function(projects, removeFunction, getTasks, taskCreate, ge
         staticDom.addProjectBtn.style.fontSize = "18px";
         staticDom.addProjectBtn.style.backgroundColor = black();
     });
-    renderSide(projects, removeFunction, getTasks, taskCreate, getProject);
+    renderSide(projects, removeFunction, tasks, taskCreate, getProject);
 }
 //Dialog eventlistener inatance manager
 
-const setupSidedialogListeners = function (removefunction, getTasks, createTask){
+const setupSidedialogListeners = function (removefunction, tasks, createTask){
     const { dialog_dPD, delete_dBD, cancel_dBD } = staticDom;
     if(sideDialogListenerInit) return
     // cancell event handling    
@@ -94,7 +94,7 @@ const setupSidedialogListeners = function (removefunction, getTasks, createTask)
         if (document.body.contains(dialog_dPD)) {
             document.body.removeChild(dialog_dPD);
         }
-        populatetMain(homeProject, getTasks, createTask);
+        populatetMain(homeProject, tasks, createTask);
         console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
         currentProjectToDelete = null;
 
@@ -111,11 +111,11 @@ const taskDialogEventHandler = function(project, createTask){
     taskDialogListenerInit = true;
 }
 //display management takes: 1project , gettask function instance, create task function for triggering dialog
-const populatetMain= function(project, getTasks, createTask){
+const populatetMain= function(project, tasks, createTask){
     const {head, main, displayTitle, tasksDisplay, addTaskBtn} = staticDom
     console.log(`populating ${project.name} initializing at id ${project.id}`);
     //for intialization
-    console.log(getTasks(project.id));
+    console.log(tasks(project.id));
     taskDialogEventHandler(project, createTask);
 
     displayTitle.innerHTML = "";          
@@ -149,12 +149,12 @@ const initDialogP = function(btnFunction){
     })
 
 }  
-const renderSide = function(projects, removefunction, getTasks, createTask, getProjectById){
+const renderSide = function(projects, removefunction, tasks, createTask, getProjectById){
     const root = staticDom.sideRoot;
     const { dialog_dPD, delete_dBD, alert_dBD } = staticDom;
     root.innerHTML = "";
 
-    setupSidedialogListeners(removefunction, getTasks, createTask);
+    setupSidedialogListeners(removefunction, tasks, createTask);
     homeProject = projects.find(p => p.name === "home");
 
     projects.forEach((project) => {
@@ -196,7 +196,7 @@ const renderSide = function(projects, removefunction, getTasks, createTask, getP
                 alert("selected project no longer exists."); 
                 
             }
-            populatetMain(freshProject, getTasks, createTask);
+            populatetMain(freshProject, tasks, createTask);
 
         });
             
