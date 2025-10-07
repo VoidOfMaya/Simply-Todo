@@ -107,6 +107,7 @@ const createSide = function(){
     return {side, projectList, addProject};
 }
 
+
 const createDisplay = function(){
     const display = document.createElement("div");
     const mainContainer = document.createElement("div");
@@ -132,9 +133,7 @@ const createDisplay = function(){
     displayTitle.style.fontSize = "38px";
 
     displayTitle.style.gridArea = "project-title"   
-   
     tasksDisplay.style.gridArea= "task-display"
-    
     addTaskBtn.style.gridArea ="task-btn"
 
     mainRoot = document.createElement("div");
@@ -254,6 +253,7 @@ const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
 const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn} = createDisplay()
+
 // _CPD is a pointer to the original function 
 export const staticDom= {
         head : createHeader(),

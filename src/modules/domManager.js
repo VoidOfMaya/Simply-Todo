@@ -50,7 +50,7 @@ const initDialogP = function(btnFunction){
 
 }
 
-const initSideBare = function(projects, removeFunction){
+const initSideBare = function(projects, removeFunction, getTasks){
     //append ti body
     document.body.appendChild(staticDom.side);  
 
@@ -73,7 +73,7 @@ const initSideBare = function(projects, removeFunction){
         staticDom.addProjectBtn.style.fontSize = "18px";
         staticDom.addProjectBtn.style.backgroundColor = black();
     });
-    renderSide(projects, removeFunction);
+    renderSide(projects, removeFunction, getTasks);
 }
 //event listener manager
 let dialogListenerInit = false;
@@ -124,9 +124,10 @@ const setupdialogListeners = function (removefunction){
 }
 
   
-const renderSide = function(projects, removefunction){
+const renderSide = function(projects, removefunction, getTasks){
     const root = staticDom.sideRoot;
     const { dialog_dPD, delete_dBD, alert_dBD } = staticDom;
+    const { projBtn: btn , projName: name , projRemove: remove} = staticDom
     root.innerHTML = "";
 
     setupdialogListeners(removefunction);
@@ -164,6 +165,7 @@ const renderSide = function(projects, removefunction){
         
         btn.addEventListener("click", ()=>{
             populatetMain(project);
+            console.log(getTasks(project.id));
             //console.log(`executed display switch to ${project.name}`);
         });
             

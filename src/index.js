@@ -15,6 +15,11 @@ console.log(`project is live`);
 
 const projectHandler = new ProjectManager();
 const taskHandler = new TaskManager();
+
+// passing binded arguments
+const projectAdd = projectHandler.deletProject.bind(projectHandler);
+const projectDelete = projectHandler.deletProject.bind(projectHandler)
+const tasksGet = taskHandler.getTasks.bind(taskHandler);
 /*demo projects */
 if (projectHandler.data.load("proj") === null){
   projectHandler.addProject(`urgent`);
@@ -39,14 +44,14 @@ console.log(maxId)
 Project.setStartingId(maxId + 1);
 function initApp(){
   init(projectHandler.getProject(3));
-  initSideBare(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler));
-  initDialogP(projectHandler.addProject.bind(projectHandler));
+  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet);
+  initDialogP(projectAdd);
  
   staticDom.dialog_CPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler));
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet);
   }) 
   staticDom.dialog_dPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectHandler.deletProject.bind(projectHandler));
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet);
   }) 
 }
 
