@@ -34,6 +34,7 @@ if(taskHandler.data.load("tasks")=== null){
   taskHandler.addTask(`go to birthday`,'', `28-06-2025`, '', '1');
   taskHandler.addTask(`fix toilet`,'', `28-06-2025`, '', '2');
   taskHandler.addTask(`test task`,'', `28-06-2026`, '', '3');
+  taskHandler.addTask(`test task 2`,'', `28-06-2026`, '', '3');
 
 }
 

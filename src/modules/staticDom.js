@@ -51,7 +51,6 @@ const createHeader= function(){
 
     return head;
 }
-
 const createSide = function(){
     const side = document.createElement("div");
     sideRoot = document.createElement("div")
@@ -106,8 +105,6 @@ const createSide = function(){
     side.appendChild(sideRoot);
     return {side, projectList, addProject};
 }
-
-
 const createDisplay = function(){
     const display = document.createElement("div");
     const mainContainer = document.createElement("div");
@@ -136,6 +133,14 @@ const createDisplay = function(){
     displayTitle.style.alignSelf = "center";
 
     tasksDisplay.style.gridArea= "task-display";
+    tasksDisplay.style.overflowY = "auto";           
+    tasksDisplay.style.maxHeight = "100%";           
+    tasksDisplay.style.display = "flex";             
+    tasksDisplay.style.flexDirection = "column";     
+    tasksDisplay.style.gap = "5px";                  
+    tasksDisplay.style.padding = " px 5px 5px 5px";              
+    tasksDisplay.style.boxSizing = "border-box";
+    tasksDisplay.id = "task-display"
 
     addTaskBtn.style.gridArea ="task-btn";
     addTaskBtn.innerHTML= `<i class="fa-solid fa-plus"></i>`;
@@ -208,8 +213,21 @@ const deleteProjectDialog = function(deleteFunction, id){
 
 
 }
+// task input format: title, info, priority, date, projectId`)
 const createTaskCard = function (){
+    const card = document.createElement('div');
+    const taskName = document.createElement('div');
+    const taskInfo = document.createElement('div');
+    const taskPriority = document.createElement('div');
+    const taskDate = document.createElement('div');
+    card.style.gridArea = "task-Card";
 
+    card.appendChild(taskName);
+    card.appendChild(taskInfo);
+    card.appendChild(taskPriority);
+    card.appendChild(taskDate)
+    
+ return {taskCard : card, taskInfo, taskName, taskPriority, taskDate}
 }
 
 const createProjectDialog = function(){
@@ -263,24 +281,19 @@ const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
 const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn} = createDisplay()
-
+const {taskCard, taskInfo, taskName, taskPriority, taskDate} = createTaskCard();
 // _CPD is a pointer to the original function 
 export const staticDom= {
-        head : createHeader(),
-        main : display,
-        mainContainer,
-        displayTitle,
-        tasksDisplay,
-        addTaskBtn,
-        side,
-        sideRoot: projectList,
-        addProjectBtn: addProject,
-        dialog_CPD : dialog,
-        input_CPD  : projectName,
-        button_CPD : btn,
-        dialog_dPD : deleteDialog,
-        delete_dBD : deletBtn,
-        cancel_dBD : cancelBtn,
-        alert_dBD  : alert, 
-
-    }
+     //header
+    head : createHeader(),
+    //main project display
+    main : display, mainContainer, displayTitle, tasksDisplay, addTaskBtn,
+    //sidebar
+    side, sideRoot: projectList, addProjectBtn: addProject,
+    //create project dialog
+    dialog_CPD : dialog, input_CPD  : projectName, button_CPD : btn,
+    //delete project dialog
+    dialog_dPD : deleteDialog, delete_dBD : deletBtn, cancel_dBD : cancelBtn, alert_dBD  : alert, 
+    //task card
+    taskCard, taskInfo, taskName, taskPriority, taskDate
+}

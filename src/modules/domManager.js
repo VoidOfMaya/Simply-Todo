@@ -120,6 +120,7 @@ const populatetMain= function(project, tasks, createTask){
 
     displayTitle.innerHTML = "";          
     displayTitle.innerText= project.name;
+    populateTasks(project.id, tasks);
 
     addTaskBtn.addEventListener('mouseover',()=>{
         addTaskBtn.style.color = black();
@@ -131,6 +132,30 @@ const populatetMain= function(project, tasks, createTask){
     });
     //task display  
     console.log(`populate ${project.name} finished`);  
+}
+const populateTasks = function (projectId, tasks){
+    const {taskCard, taskInfo, taskName, taskPriority, taskDate, tasksDisplay} = staticDom;
+    tasksDisplay.innerHTML = ""
+
+    tasks(projectId).forEach(task=>{
+        console.log(task);
+        taskName.innerText = task.name;
+        taskInfo.innerText = task.info;
+        taskDate.innerText = task.dueDate;
+        taskPriority.innerText = task.priority;
+
+        taskCard.style.background = topWhite();
+        taskCard.style.margin = "px 10px"
+        
+        tasksDisplay.style.padding = "px 10px";
+
+
+        tasksDisplay.appendChild(taskCard);
+    })
+
+    
+
+
 }
 const initDialogP = function(btnFunction){
     //extracting out dialog relevant variables from staticDom
@@ -215,6 +240,8 @@ const renderSide = function(projects, removefunction, tasks, createTask, getProj
         //delet event handeling
         remove.addEventListener("mouseover", ()=>{           
             remove.textContent = 'delete'; 
+            remove.style.paddingRight = "15px";
+            remove.style.paddingLeft = "15px";
             name.style.gridTemplateColumns = "4fr 6fr";
             remove.style.background = urgentRed();
             name.style.background = gray();
@@ -223,6 +250,8 @@ const renderSide = function(projects, removefunction, tasks, createTask, getProj
         remove.addEventListener("mouseout", ()=>{
             
             remove.textContent = '';
+            remove.style.paddingRight = "0px";
+            remove.style.paddingLeft = "0px";
             name.style.gridTemplateColumns = "1fr 19fr";
             remove.style.background = black();
             name.style.background = black();
