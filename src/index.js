@@ -52,15 +52,15 @@ console.log(maxId)
 Project.setStartingId(maxId + 1);
 
 function initApp(){
-  init(projectHandler.getProject(3), tasksGet, taskCreate,);
-  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet, taskCreate, projectGet);
+  init(projectHandler.getProject(3), tasksGet,taskCreate,); //has task
+  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate); //has task
   initDialogP(projectAdd);
  
   staticDom.dialog_CPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, taskCreate, projectGet);
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, taskCreate, projectGet);//hastask
   }) 
   staticDom.dialog_dPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, taskCreate, projectGet);
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate);//has task
   }) 
 }
 

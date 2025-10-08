@@ -329,12 +329,61 @@ const createProjectDialog = function(){
 
     return {dialog, projectName, btn};
 }
+const createTaskDialog = function(){
+    // required inputs name, info, date, priority, projID
+    const taskDialog= document.createElement('dialog');
+   
+    const title = document.createElement('div');
+    const name = document.createElement('input');
+    const info = document.createElement('input');
+    const date = document.createElement('input');
+    const priority = ["urgent", "upcoming", "none urgent"];
+    
+
+    title.innerHTML =" create new task:";
+    title.style.fontsize = "20px";
+
+    name.type = "text";
+    name.min = "0";
+    name.max = "10"; 
+
+    info.type = "text";
+    info.min = "0";
+    info.max = "100"; 
+
+    date.type = "date";
+
+    priority.forEach(p=>{
+        const element = document.createElement('input');
+        element.type = 'radio';
+        element.name = "priority";
+        element.value = p;
+        element.id =`priority-${p}`;
+
+        const label = document.createElement("label");
+        label.setAttribute("for", p.id);
+        label.textContent = p;
+
+        taskDialog.appendChild(element);
+        taskDialog.appendChild(label);
+    })
+
+    taskDialog.appendChild(title);
+    taskDialog.appendChild(name);
+    taskDialog.appendChild(info);
+    taskDialog.appendChild(date);
+    
+
+
+    return {taskDialog};
+}
 //spliting finctions to variables while calling the function once
 const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
 const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn} = createDisplay()
 const {taskCard, taskInfo, taskName, taskPriority, taskDate, taskOpen, taskEdit} = createTaskCard();
+const {taskDialog} = createTaskDialog();
 // _CPD is a pointer to the original function 
 export const staticDom= {
      //header
@@ -349,4 +398,6 @@ export const staticDom= {
     dialog_dPD : deleteDialog, delete_dBD : deletBtn, cancel_dBD : cancelBtn, alert_dBD  : alert, 
     //task card
     taskCard, taskInfo, taskName, taskPriority, taskDate , taskOpen, taskEdit,
+    //task dialog
+    taskDialog,
 }
