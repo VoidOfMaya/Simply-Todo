@@ -178,8 +178,12 @@ const populateTasks = function (projectId, tasks){
             clonePriority.innerHTML = "";
         })
         cloneEdit.addEventListener('mouseover',()=>{
-            cardClone.style.gridTemplateColumns = "10px 7fr 2fr 70px ";
-            cloneEdit.innerHTML = "edit";
+            cardClone.style.gridTemplateColumns = "10px 5fr 2fr 2fr ";
+            if(!isExpanded){
+            cloneEdit.innerHTML = "open";
+            }else{
+                cloneEdit.innerHTML = "close";
+            }
         })
         cloneEdit.addEventListener('mouseout',()=>{
             cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
@@ -193,9 +197,10 @@ const populateTasks = function (projectId, tasks){
                 console.log(isExpanded);
                 cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
                 cardClone.style.gridTemplateRows = "1fr 1fr";
-
+                cloneEdit.innerHTML = "retract";
                 cardClone.style.gridTemplateAreas = `"priority name date edit"
                                                      "priority info info edit"`
+
                 isExpanded = true;
             }else{
                 cardClone.style.gridTemplateColumns = "10px 7fr 2fr 10px ";
