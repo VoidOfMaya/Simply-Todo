@@ -6,6 +6,7 @@ let homeProject = null;
 let currentProjectToDelete = null;
 let sideDialogListenerInit = false;
 let taskDialogListenerInit = false;
+let taskCardEventListener = false;
 
 //initialization
 const init = function(defaultProject, tasks, createTask){
@@ -110,6 +111,7 @@ const taskDialogEventHandler = function(project, createTask){
     })
     taskDialogListenerInit = true;
 }
+
 //display management takes: 1project , gettask function instance, create task function for triggering dialog
 const populatetMain= function(project, tasks, createTask){
     const {head, main, displayTitle, tasksDisplay, addTaskBtn} = staticDom
@@ -134,9 +136,10 @@ const populatetMain= function(project, tasks, createTask){
     console.log(`populate ${project.name} finished`);  
 }
 const populateTasks = function (projectId, tasks){
-    const {taskCard, taskInfo, taskName, taskPriority, taskDate, tasksDisplay} = staticDom;
+    const {taskCard, taskInfo, taskName, taskPriority, taskDate, taskEdit, tasksDisplay} = staticDom;
     tasksDisplay.innerHTML = ""
-
+    let isExpanded = false;
+    
     tasks(projectId).forEach(task=>{
         //cloning card from original
         const cardClone = taskCard.cloneNode(true)
@@ -145,12 +148,17 @@ const populateTasks = function (projectId, tasks){
         const cloneInfo  = cardClone.querySelector("#info");
         const cloneDate  = cardClone.querySelector("#date");
         const clonePriority = cardClone.querySelector("#priority");
+        const cloneEdit = cardClone.querySelector("#edit");
 
         cloneName.innerText = task.name;
         cloneInfo.innerText = task.info;
         cloneDate.innerText = task.dueDate;
-        //taskPriority.innerText = task.priority;
 
+        clonePriority.innerHTML = "";
+        cloneEdit.innerHTML = "";
+        
+        //task cards animation
+ 
         if(task.priority === "urgent"){
             clonePriority.style.background = urgentRed();
         }
@@ -160,6 +168,42 @@ const populateTasks = function (projectId, tasks){
         if(task.priority === "none-urgent"){
             clonePriority.style.background = green();
         }
+
+        clonePriority.addEventListener('mouseover',()=>{
+            cardClone.style.gridTemplateColumns = "2fr 5fr 2fr 10px ";
+            clonePriority.innerText = task.priority;
+        })
+        clonePriority.addEventListener('mouseout',()=>{
+            cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
+            clonePriority.innerHTML = "";
+        })
+        cloneEdit.addEventListener('mouseover',()=>{
+            cardClone.style.gridTemplateColumns = "10px 7fr 2fr 70px ";
+            cloneEdit.innerHTML = "edit";
+        })
+        cloneEdit.addEventListener('mouseout',()=>{
+            cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
+            cloneEdit.innerHTML = "";
+        })
+
+        //on click
+
+        cloneEdit.addEventListener('click',()=>{
+            if (!isExpanded){
+                console.log(isExpanded);
+                cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
+                cardClone.style.gridTemplateRows = "1fr 1fr";
+
+                cardClone.style.gridTemplateAreas = `"priority name date edit"
+                                                     "priority info info edit"`
+                isExpanded = true;
+            }else{
+                cardClone.style.gridTemplateColumns = "10px 7fr 2fr 10px ";
+                cardClone.style.gridTemplateRows = "1fr";
+                cardClone.style.gridTemplateAreas = `"priority name date edit"`;
+                isExpanded =false;
+            }
+        })
 
         tasksDisplay.style.padding = "0px 10px";
         tasksDisplay.style.gap = "15px";
