@@ -27,14 +27,15 @@ if (projectHandler.data.load("proj") === null){
 }
 
 //demo tasks.
+const demoInfo= "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut"
 if(taskHandler.data.load("tasks")=== null){
 /* taskformat: addtask('name','info','due date','priority','project id') */
   taskHandler.addTask(`pay bank`,'', `28-06-2025`, '', '0');
   taskHandler.addTask(`walk dog`,'', `28-06-2025`, '', '0');
   taskHandler.addTask(`go to birthday`,'', `28-06-2025`, '', '1');
-  taskHandler.addTask(`fix toilet`,'', `28-06-2025`, 'urgent', '3');
-  taskHandler.addTask(`test task`,'', `28-06-2026`, 'none-urgent', '3');
-  taskHandler.addTask(`test task 2`,'', `28-06-2026`, 'upcoming', '3');
+  taskHandler.addTask(`fix toilet`,demoInfo, `28-06-2025`, 'urgent', '3');
+  taskHandler.addTask(`test task`,demoInfo, `28-06-2026`, 'none-urgent', '3');
+  taskHandler.addTask(`test task 2`,demoInfo, `28-06-2026`, 'upcoming', '3');
 
 }
 

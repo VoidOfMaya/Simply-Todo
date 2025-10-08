@@ -1,4 +1,4 @@
-import { topWhite,mainWhite, black ,green, urgentRed, gray, moderateYellow } from "./colors"; // topwhite, mainwhite, balck
+import { topWhite,mainWhite, black ,green, urgentRed, gray, moderateYellow, textGray } from "./colors"; // topwhite, mainwhite, balck
 import { staticDom } from "./staticDom";
 
 let dialogInstance =null;
@@ -53,7 +53,25 @@ const initSideBare = function(projects, removeFunction, tasks, taskCreate, getPr
     });
     renderSide(projects, removeFunction, tasks, taskCreate, getProject);
 }
+const initDialogP = function(btnFunction){
+    //extracting out dialog relevant variables from staticDom
+    const{dialog_CPD, input_CPD, button_CPD} = staticDom;
+
+    button_CPD.addEventListener("click",()=>{
+        const name = input_CPD.value.trim();
+        if (name === ""){
+            alert("please enter a project name");
+            return            
+        }
+        btnFunction(name);
+        dialog_CPD.close();
+        document.body.removeChild(dialogInstance);        
+        
+    })
+
+}
 //Dialog eventlistener inatance manager
+
 
 const setupSidedialogListeners = function (removefunction, tasks, createTask){
     const { dialog_dPD, delete_dBD, cancel_dBD } = staticDom;
@@ -103,13 +121,30 @@ const setupSidedialogListeners = function (removefunction, tasks, createTask){
     sideDialogListenerInit = true;
 }
 
-const taskDialogEventHandler = function(project, createTask){
-    const {addTaskBtn} = staticDom;
-    if(taskDialogListenerInit) return;
-    addTaskBtn.addEventListener('click', ()=>{
-        console.log('task creation button triggered')
-    })
-    taskDialogListenerInit = true;
+let currentProject = null;
+let currentClickListener = null;
+
+const projectDialogEventHandler = function(element, project, createTask){
+
+    if(currentProject === project.id) return;
+    if(currentClickListener){
+        element.removeEventListener('click', currentClickListener);
+    }
+    
+    currentClickListener = () => {
+        taskCreation(project.id);
+    };
+    element.addEventListener('click', currentClickListener);
+    
+    currentProject = project.id;
+    
+    return element;
+    //taskDialogListenerInit = true;
+}
+
+const taskCreation = function( projectId){
+    console.log(`loading tasks under project id: ${projectId}`);
+    
 }
 
 //display management takes: 1project , gettask function instance, create task function for triggering dialog
@@ -118,8 +153,8 @@ const populatetMain= function(project, tasks, createTask){
     console.log(`populating ${project.name} initializing at id ${project.id}`);
     //for intialization
     console.log(tasks(project.id));
-    taskDialogEventHandler(project, createTask);
-
+    projectDialogEventHandler( addTaskBtn, project, createTask);
+    //taskbtnlistenerInstance = true;
     displayTitle.innerHTML = "";          
     displayTitle.innerText= project.name;
     populateTasks(project.id, tasks);
@@ -132,30 +167,33 @@ const populatetMain= function(project, tasks, createTask){
         addTaskBtn.style.color = topWhite();
         addTaskBtn.style.background = mainWhite();
     });
+    
     //task display  
     console.log(`populate ${project.name} finished`);  
 }
 const populateTasks = function (projectId, tasks){
     const {taskCard, taskInfo, taskName, taskPriority, taskDate, taskEdit, tasksDisplay} = staticDom;
     tasksDisplay.innerHTML = ""
-    let isExpanded = false;
     
     tasks(projectId).forEach(task=>{
+
         //cloning card from original
         const cardClone = taskCard.cloneNode(true)
+        let isExpanded = false;
 
         const cloneName = cardClone.querySelector("#name");
         const cloneInfo  = cardClone.querySelector("#info");
         const cloneDate  = cardClone.querySelector("#date");
         const clonePriority = cardClone.querySelector("#priority");
-        const cloneEdit = cardClone.querySelector("#edit");
+        const cloneOpen = cardClone.querySelector("#open");
+        const cloneEdit = cardClone.querySelector('#edit');
 
         cloneName.innerText = task.name;
-        cloneInfo.innerText = task.info;
+        cloneInfo.innerText ="";
         cloneDate.innerText = task.dueDate;
 
         clonePriority.innerHTML = "";
-        cloneEdit.innerHTML = "";
+        cloneOpen.innerHTML = "";
         
         //task cards animation
  
@@ -177,35 +215,53 @@ const populateTasks = function (projectId, tasks){
             cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
             clonePriority.innerHTML = "";
         })
-        cloneEdit.addEventListener('mouseover',()=>{
+        cloneOpen.addEventListener('mouseover',()=>{
             cardClone.style.gridTemplateColumns = "10px 5fr 2fr 2fr ";
             if(!isExpanded){
-            cloneEdit.innerHTML = "open";
+            cloneOpen.innerHTML = "open";
             }else{
-                cloneEdit.innerHTML = "close";
+                cloneOpen.innerHTML = "close";
             }
         })
-        cloneEdit.addEventListener('mouseout',()=>{
+        cloneOpen.addEventListener('mouseout',()=>{
             cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
-            cloneEdit.innerHTML = "";
+            cloneOpen.innerHTML = "";
         })
+        cloneEdit.addEventListener('mouseover',()=>{
+            cloneEdit.style.background = moderateYellow();
+            cloneEdit.style.color = mainWhite();
 
+        })
+        cloneEdit.addEventListener('mouseout',()=>{
+            cloneEdit.style.background = topWhite();
+            cloneEdit.style.color = mainWhite();        
+        })
         //on click
-
-        cloneEdit.addEventListener('click',()=>{
+        cloneOpen.addEventListener('click',()=>{
             if (!isExpanded){
                 console.log(isExpanded);
                 cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
-                cardClone.style.gridTemplateRows = "1fr 1fr";
-                cloneEdit.innerHTML = "retract";
-                cardClone.style.gridTemplateAreas = `"priority name date edit"
-                                                     "priority info info edit"`
+                cardClone.style.gridTemplateRows = "1fr 2fr";
+                
+                cloneInfo.innerText = task.info;
+                cloneInfo.style.padding = "0px 10px"
+
+                cloneEdit.innerHTML = "edit";
+                cloneEdit.style.color = mainWhite();
+                cloneEdit.style.fontSize = "20px";
+                cloneEdit.style.alignContent = 'center';
+                cloneEdit.style.textAlign = 'center';
+                cardClone.style.gridTemplateAreas = `"priority name date open"
+                                                     "priority info edit open"`
 
                 isExpanded = true;
             }else{
                 cardClone.style.gridTemplateColumns = "10px 7fr 2fr 10px ";
                 cardClone.style.gridTemplateRows = "1fr";
-                cardClone.style.gridTemplateAreas = `"priority name date edit"`;
+                cardClone.style.gridTemplateAreas = `"priority name date open"`;
+                cloneInfo.innerText = "";
+                cloneInfo.style.padding = '0px';
+                cloneEdit.innerHTML ='';
                 isExpanded =false;
             }
         })
@@ -217,23 +273,7 @@ const populateTasks = function (projectId, tasks){
     })
 
 }
-const initDialogP = function(btnFunction){
-    //extracting out dialog relevant variables from staticDom
-    const{dialog_CPD, input_CPD, button_CPD} = staticDom;
-
-    button_CPD.addEventListener("click",()=>{
-        const name = input_CPD.value.trim();
-        if (name === ""){
-            alert("please enter a project name");
-            return            
-        }
-        btnFunction(name);
-        dialog_CPD.close();
-        document.body.removeChild(dialogInstance);        
-        
-    })
-
-}  
+  
 const renderSide = function(projects, removefunction, tasks, createTask, getProjectById){
     const root = staticDom.sideRoot;
     const { dialog_dPD, delete_dBD, alert_dBD } = staticDom;

@@ -220,12 +220,14 @@ const createTaskCard = function (){
     const taskInfo = document.createElement('div');
     const taskPriority = document.createElement('div');
     const taskDate = document.createElement('div');
+    const taskOpen = document.createElement('div');
     const taskEdit = document.createElement('div');
 
     taskPriority.id = "priority";
     taskName.id = "name";
     taskDate.id = "date";
     taskInfo.id = "info";
+    taskOpen.id = "open";
     taskEdit.id = "edit";
 
     card.style.gridArea = "task-Card";
@@ -236,10 +238,11 @@ const createTaskCard = function (){
     card.style.boxShadow = `inset 0px -20px 26px -20px rgba(187, 187, 187, 1)`
     card.style.borderRadius = "8px 8px 8px 8px"
     
+    
 
     taskName.style.padding = "10px";
     taskName.style.fontSize = "26px"
-
+    
     taskPriority.style.background = gray();
     taskPriority.style.color = mainWhite();
     taskPriority.style.fontSize = "20px";
@@ -249,28 +252,35 @@ const createTaskCard = function (){
     
     taskDate.style.alignSelf = 'center';
 
-    taskEdit.style.background = gray();
+    taskOpen.style.background = gray();
+    taskOpen.style.color = mainWhite();
+    taskOpen.style.fontSize = "20px";
+    taskOpen.style.alignContent = 'center';
+    taskOpen.style.textAlign = 'center';
+    taskOpen.style.borderRadius = "0px 5px 5px 0px";
+
+    taskEdit.style.background = topWhite();
     taskEdit.style.color = mainWhite();
-    taskEdit.style.fontSize = "20px";
-    taskEdit.style.alignContent = 'center';
-    taskEdit.style.textAlign = 'center';
-    taskEdit.style.borderRadius = "0px 5px 5px 0px"
+    taskEdit.style.fontSize = "20px"
+    taskEdit.style.margin = "20px 0px 20px 0px";
+    taskEdit.style.borderRadius ="20px 0px 0px 20px";
 
     taskPriority.style.gridArea = "priority";
     taskName.style.gridArea = "name";
     taskDate.style.gridArea = "date";
     taskInfo.style.gridArea = "info";
-    taskEdit.style.gridArea = "edit";
+    taskOpen.style.gridArea = "open";
 
-    card.style.gridTemplateAreas = `"priority name date edit"`;
+    card.style.gridTemplateAreas = `"priority name date open"`;
 
     card.appendChild(taskName);
     card.appendChild(taskInfo);
     card.appendChild(taskPriority);
     card.appendChild(taskDate)
+    card.appendChild(taskOpen);
     card.appendChild(taskEdit);
     
- return {taskCard : card, taskInfo, taskName, taskPriority, taskDate, taskEdit}
+ return {taskCard : card, taskInfo, taskName, taskPriority, taskDate, taskOpen, taskEdit}
 }
 
 const createProjectDialog = function(){
@@ -324,7 +334,7 @@ const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
 const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn} = createDisplay()
-const {taskCard, taskInfo, taskName, taskPriority, taskDate, taskEdit} = createTaskCard();
+const {taskCard, taskInfo, taskName, taskPriority, taskDate, taskOpen, taskEdit} = createTaskCard();
 // _CPD is a pointer to the original function 
 export const staticDom= {
      //header
@@ -338,5 +348,5 @@ export const staticDom= {
     //delete project dialog
     dialog_dPD : deleteDialog, delete_dBD : deletBtn, cancel_dBD : cancelBtn, alert_dBD  : alert, 
     //task card
-    taskCard, taskInfo, taskName, taskPriority, taskDate , taskEdit,
+    taskCard, taskInfo, taskName, taskPriority, taskDate , taskOpen, taskEdit,
 }
