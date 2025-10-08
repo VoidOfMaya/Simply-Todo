@@ -5,7 +5,7 @@
  => task card elements
  */
 
-import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow } from "./colors"; // topwhite, mainwhite, balck
+import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow, gray } from "./colors"; // topwhite, mainwhite, balck
 
 // element root
 let sideRoot = null;
@@ -220,7 +220,34 @@ const createTaskCard = function (){
     const taskInfo = document.createElement('div');
     const taskPriority = document.createElement('div');
     const taskDate = document.createElement('div');
+
+    taskPriority.id = "priority";
+    taskName.id = "name";
+    taskDate.id = "date";
+    taskInfo.id = "info";
+
     card.style.gridArea = "task-Card";
+    card.style.margin = "0px 50px";
+    card.style.background = topWhite();
+    card.style.display= "grid";
+    card.style.gridTemplateColumns = "10px 7fr 2fr 10px ";
+    card.style.boxShadow = `inset 0px -20px 26px -20px rgba(187, 187, 187, 1)`
+    
+
+    taskName.style.padding = "10px";
+    taskName.style.fontSize = "26px"
+
+    taskPriority.style.background = gray();
+    taskPriority.style.borderRadius = "5px 0px 0px 5px"
+    
+    taskDate.style.alignSelf = 'center'
+
+    taskPriority.style.gridArea = "priority";
+    taskName.style.gridArea = "name";
+    taskDate.style.gridArea = "date";
+    taskInfo.style.gridArea = "info";
+
+    card.style.gridTemplateAreas = `"priority name date info"`;
 
     card.appendChild(taskName);
     card.appendChild(taskInfo);
@@ -295,5 +322,5 @@ export const staticDom= {
     //delete project dialog
     dialog_dPD : deleteDialog, delete_dBD : deletBtn, cancel_dBD : cancelBtn, alert_dBD  : alert, 
     //task card
-    taskCard, taskInfo, taskName, taskPriority, taskDate
+    taskCard, taskInfo, taskName, taskPriority, taskDate ,
 }

@@ -1,4 +1,4 @@
-import { topWhite,mainWhite, black ,green, urgentRed, gray } from "./colors"; // topwhite, mainwhite, balck
+import { topWhite,mainWhite, black ,green, urgentRed, gray, moderateYellow } from "./colors"; // topwhite, mainwhite, balck
 import { staticDom } from "./staticDom";
 
 let dialogInstance =null;
@@ -138,23 +138,34 @@ const populateTasks = function (projectId, tasks){
     tasksDisplay.innerHTML = ""
 
     tasks(projectId).forEach(task=>{
-        console.log(task);
-        taskName.innerText = task.name;
-        taskInfo.innerText = task.info;
-        taskDate.innerText = task.dueDate;
-        taskPriority.innerText = task.priority;
+        //cloning card from original
+        const cardClone = taskCard.cloneNode(true)
 
-        taskCard.style.background = topWhite();
-        taskCard.style.margin = "px 10px"
+        const cloneName = cardClone.querySelector("#name");
+        const cloneInfo  = cardClone.querySelector("#info");
+        const cloneDate  = cardClone.querySelector("#date");
+        const clonePriority = cardClone.querySelector("#priority");
+
+        cloneName.innerText = task.name;
+        cloneInfo.innerText = task.info;
+        cloneDate.innerText = task.dueDate;
+        //taskPriority.innerText = task.priority;
+
+        if(task.priority === "urgent"){
+            clonePriority.style.background = urgentRed();
+        }
+        if(task.priority === "upcoming"){
+            clonePriority.style.background = moderateYellow();
+        }
+        if(task.priority === "none-urgent"){
+            clonePriority.style.background = green();
+        }
+
+        tasksDisplay.style.padding = "0px 10px";
+        tasksDisplay.style.gap = "15px";
+        tasksDisplay.appendChild(cardClone);
         
-        tasksDisplay.style.padding = "px 10px";
-
-
-        tasksDisplay.appendChild(taskCard);
     })
-
-    
-
 
 }
 const initDialogP = function(btnFunction){
