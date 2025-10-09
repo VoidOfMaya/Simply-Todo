@@ -5,7 +5,7 @@
  => task card elements
  */
 
-import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow, gray } from "./colors"; // topwhite, mainwhite, balck
+import { topWhite,mainWhite, black ,green, urgentRed, moderateYellow, gray, textGray } from "./colors"; // topwhite, mainwhite, balck
 
 // element root
 let sideRoot = null;
@@ -297,7 +297,7 @@ const createProjectDialog = function(){
     
     const projectName = document.createElement("input");
     projectName.type = "text";
-    projectName.placeholder= "Project name goes here";
+    projectName.placeholder= "Project name :";
     projectName.style.width = "90%";
     projectName.style.justifySelf= "center";
     projectName.style.border = "none";
@@ -337,45 +337,118 @@ const createTaskDialog = function(){
     const name = document.createElement('input');
     const info = document.createElement('input');
     const date = document.createElement('input');
-    const priority = ["urgent", "upcoming", "none urgent"];
-    
+    const priority = document.createElement('div');
+    const createBtn = document.createElement('div');
+    const cancelBtn = document.createElement('div');
 
-    title.innerHTML =" create new task:";
-    title.style.fontsize = "20px";
+    taskDialog.style.border = "none";
+    taskDialog.style.borderRadius = "25px";
+    taskDialog.style.width = "40vw";
+    taskDialog.style.display = "grid";
+    taskDialog.style.gridTemplateColumns = "1fr 1fr";
+    taskDialog.style.gridTemplateRows = ""
+    taskDialog.style.gridTemplateRows = "repeat(1fr * 6)";
+    taskDialog.style.gap = "15px";
+    taskDialog.style.background = topWhite();
+
+    title.innerHTML =" create new task";
+    title.style.fontsize = "26px";
+    title.style.gridArea = "title";
+    title.style.justifySelf = "center";
 
     name.type = "text";
     name.min = "0";
     name.max = "10"; 
+    name.style.gridArea= "name-input";
+    name.style.border= "none";
+    name.style.border= "focus: none";
+    name.style.padding= "5px";
+    name.placeholder = "task name:"
 
     info.type = "text";
     info.min = "0";
-    info.max = "100"; 
-
+    info.max = "50"; 
+    info.style.gridArea = "info-input";
+    info.placeholder = "basic task info:"
+    
     date.type = "date";
+    date.style.gridArea= "date-input";
 
-    priority.forEach(p=>{
-        const element = document.createElement('input');
-        element.type = 'radio';
-        element.name = "priority";
-        element.value = p;
-        element.id =`priority-${p}`;
+    priority.style.gridArea = "priority-input";
+    priority.style.display = "grid";
+    priority.style.justifyContent = "center";
+    priority.style.gridTemplateColumns= "1fr 1fr 1fr" ;
+    priority.style.gridTemplateRows = "1fr 2fr";
+    priority.style.gridTemplateAreas = `".  title ."
+                                        "urgent moderate non-urgent"`;
 
-        const label = document.createElement("label");
-        label.setAttribute("for", p.id);
-        label.textContent = p;
+    const priorityHead = document.createElement('div');
+    priorityHead.innerHTML ="set priority level";
+    priorityHead.style.gridArea = "title";
 
-        taskDialog.appendChild(element);
-        taskDialog.appendChild(label);
-    })
 
+    const urgent = document.createElement("div");
+    urgent.innerHTML = "urgent";
+    urgent.style.textAlign = "center";
+    urgent.style.alignContent= "center";
+    urgent.style.gridArea = "urgent";
+    urgent.style.background= urgentRed();
+
+    const moderate = document.createElement("div");
+    moderate.innerHTML = "moderate";
+    moderate.style.textAlign = "center";
+    moderate.style.alignContent= "center";
+    moderate.style.gridArea = "moderate";
+    moderate.style.background = moderateYellow();
+
+    const nonUrgent = document.createElement("div");
+    nonUrgent.innerHTML = "none urgent";
+    nonUrgent.style.textAlign = "center";
+    nonUrgent.style.alignContent= "center";
+    nonUrgent.style.gridArea = "non-urgent";
+    nonUrgent.style.background = green();
+
+    priority.appendChild(priorityHead);
+    priority.appendChild(urgent);
+    priority.appendChild(moderate);
+    priority.appendChild(nonUrgent);
+
+
+
+    createBtn.style.gridArea= "create-btn";
+    createBtn.innerHTML = "create";
+    createBtn.style.background = mainWhite();
+    createBtn.style.padding = "10px";
+    createBtn.style.borderRadius = "0px 0px 20px 0px";
+    createBtn.style.fontSize = "20px";
+    createBtn.style.textAlign = "center";
+
+    cancelBtn.style.gridArea = "cancel-btn";
+    cancelBtn.innerHTML = "cancel";
+    cancelBtn.style.background = mainWhite();
+    cancelBtn.style.borderRadius = "0px 0px 0px 20px";
+    cancelBtn.style.fontSize = "20px";
+    cancelBtn.style.textAlign= "center";
+    cancelBtn.style.alignContent = "center";
+
+    taskDialog.style.gridTemplateAreas= `"title title"
+                                         "name-input name-input"
+                                         "date-input date-input"
+                                         "info-input info-input"
+                                         "priority-input priority-input"
+                                         "cancel-btn create-btn"`
+    
     taskDialog.appendChild(title);
     taskDialog.appendChild(name);
     taskDialog.appendChild(info);
     taskDialog.appendChild(date);
+    taskDialog.appendChild(priority);
+    taskDialog.appendChild(createBtn);
+    taskDialog.appendChild(cancelBtn);
     
 
 
-    return {taskDialog};
+    return {taskDialog, name, info, date, createBtn, cancelBtn, priority, urgent, moderate, nonUrgent };
 }
 //spliting finctions to variables while calling the function once
 const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
@@ -383,7 +456,7 @@ const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
 const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn} = createDisplay()
 const {taskCard, taskInfo, taskName, taskPriority, taskDate, taskOpen, taskEdit} = createTaskCard();
-const {taskDialog} = createTaskDialog();
+const {taskDialog, name, info, date, createBtn, cancelBtn: cancel_cTD, priority, urgent, moderate, nonUrgent} = createTaskDialog();
 // _CPD is a pointer to the original function 
 export const staticDom= {
      //header
@@ -399,5 +472,5 @@ export const staticDom= {
     //task card
     taskCard, taskInfo, taskName, taskPriority, taskDate , taskOpen, taskEdit,
     //task dialog
-    taskDialog,
+    taskDialog, name, info, date, createBtn, cancel_cTD, priority, urgent, moderate, nonUrgent,
 }

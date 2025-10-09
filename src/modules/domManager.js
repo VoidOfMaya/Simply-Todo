@@ -111,7 +111,7 @@ const setupSidedialogListeners = function (removefunction, tasks, addTask){
         if (document.body.contains(dialog_dPD)) {
             document.body.removeChild(dialog_dPD);
         }
-        populateMain(homeProject, tasks, addTask,createTask);
+        populateMain(homeProject, tasks, addTask);
         console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
         currentProjectToDelete = null;
 
@@ -122,7 +122,7 @@ const setupSidedialogListeners = function (removefunction, tasks, addTask){
 let currentProject = null;
 let currentClickListener = null;
 //has add task
-const projectDialogEventHandler = function(element, project, addTask){
+const projectDialogEventHandler = function(element, project, addTask, tasks){
 
     if(currentProject === project.id) return;
     if(currentClickListener){
@@ -130,7 +130,7 @@ const projectDialogEventHandler = function(element, project, addTask){
     }
     
     currentClickListener = () => {
-        taskCreation(project.id, addTask);
+        taskCreation(addTask, tasks);
     };
     element.addEventListener('click', currentClickListener);
     
@@ -138,22 +138,74 @@ const projectDialogEventHandler = function(element, project, addTask){
     
     return element;
 }
-//has add task origin
-const taskCreation = function( projectId, addTask){
-    const {taskDialog} = staticDom;
-    console.log(`loading tasks under project id: ${projectId}`);
+//has add task origin 
+
+let priorityLevel = "";
+const prioritySelection = function (){
+    const {priority, urgent, moderate, nonUrgent} = staticDom;
+
+        urgent.addEventListener("click", ()=>{
+            priorityLevel = "urgent";
+            console.log(`priority set to: ${priorityLevel}`);
+            return priorityLevel;
+        });
+        moderate.addEventListener("click", ()=>{
+            priorityLevel ="upcoming";
+            console.log(`priority set to: ${priorityLevel}`);
+            return priorityLevel;
+        });
+        nonUrgent.addEventListener("click", ()=>{
+            priorityLevel ="none-urgent";
+            console.log(`priority set to: ${priorityLevel}`);
+            return priorityLevel;
+        });
+          
+
+    }
+let createTaskDialogListenerInstance = false;
+const taskCreation = function( addTask, tasks){
+    const {taskDialog, name, info, date, createBtn, cancel_cTD} = staticDom;
+    let projectId;
+    //console.log(`loading tasks under project id: ${projectId}`);
     document.body.appendChild(taskDialog);
     taskDialog.showModal();
-    
+
+
+    if(!createTaskDialogListenerInstance){
+        cancel_cTD.addEventListener("click", ()=>{
+            projectId = currentProject;
+            taskDialog.close();
+            document.body.removeChild(taskDialog);
+            console.log(`task creation dialog closed,for ${projectId}`);
+            
+        })
+        createBtn.addEventListener('click',()=>{
+            projectId = currentProject;
+            addTask(name.value, info.value, date.value, priorityLevel, projectId);
+            //console.log(`${name.value}, ${info.value}, ${date.value}, ${priorityLevel}, ${projectId}`)
+            taskDialog.close();
+            document.body.removeChild(taskDialog);           
+        })
+        taskDialog.addEventListener('close', ()=>{
+            projectId = currentProject;
+            console.log( tasks);
+            populateTasks(projectId, tasks)
+        })
+        createTaskDialogListenerInstance = true;
+        prioritySelection();
+
+        
+    }   
 }
 //display management takes: 1project , gettask function instance, create task function for triggering dialog
 //has add task
 const populateMain= function(project, tasks, addTask){
     const {displayTitle, addTaskBtn} = staticDom
+    console.log("project in populateMain:", project);
     console.log(`populating ${project.name} initializing at id ${project.id}`);
     //for intialization
     console.log(tasks(project.id));
-    projectDialogEventHandler( addTaskBtn, project, addTask);
+    projectDialogEventHandler( addTaskBtn, project, addTask, tasks);
     //taskbtnlistenerInstance = true;
     displayTitle.innerHTML = "";          
     displayTitle.innerText= project.name;
@@ -319,9 +371,10 @@ const renderSide = function(projects, removefunction, tasks, getProjectById, new
             if(!freshProject){
                 console.log(`youre tryinh to view project ${project.name}, at id: ${freshProject}`)
                 alert("selected project no longer exists."); 
+                return
                 
             }
-            populateMain(freshProject, tasks, newTask, createTask);
+            populateMain(freshProject, tasks, newTask,);
 
         });
             
@@ -372,4 +425,5 @@ export{
     initDialogP,
     initSideBare,
     renderSide,
+
 }

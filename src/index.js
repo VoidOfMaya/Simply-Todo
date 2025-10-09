@@ -2,7 +2,7 @@
 import "./styles.css";
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager"; 
-import { init, initDialogP, initMain, initSideBare , renderSide} from "./modules/domManager";
+import { init, initDialogP, initSideBare , renderSide, } from "./modules/domManager";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { staticDom } from "./modules/staticDom";
 import { Project } from "./modules/Project";
@@ -57,11 +57,11 @@ function initApp(){
   initDialogP(projectAdd);
  
   staticDom.dialog_CPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, taskCreate, projectGet);//hastask
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate);//hastask
   }) 
   staticDom.dialog_dPD.addEventListener('close', ()=>{
     renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate);//has task
-  }) 
+  })
 }
 
 
