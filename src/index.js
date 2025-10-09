@@ -42,9 +42,13 @@ if(taskHandler.data.load("tasks")=== null){
 // passing binded arguments
 const projectGet = projectHandler.getProject.bind(projectHandler);
 const projectAdd = projectHandler.addProject.bind(projectHandler);
-const projectDelete = projectHandler.deletProject.bind(projectHandler)
+const projectDelete = projectHandler.deletProject.bind(projectHandler);
+const projectUpdate = projectHandler.updateProject.bind(projectHandler);
+
 const tasksGet = taskHandler.getTasks.bind(taskHandler);
 const taskCreate = taskHandler.addTask.bind(taskHandler);
+const taskUpdate = taskHandler.updateTask.bind(taskHandler);
+const taskDelet = taskHandler.deletTask.bind(taskHandler);
 
 const savedProjects = projectHandler.showProjects();
 const maxId = savedProjects.reduce((max, proj) => Math.max(max, proj.id), -1);

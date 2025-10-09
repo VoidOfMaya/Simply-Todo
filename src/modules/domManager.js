@@ -1,13 +1,14 @@
 import { topWhite,mainWhite, black ,green, urgentRed, gray, moderateYellow, textGray } from "./colors"; // topwhite, mainwhite, balck
 import { staticDom } from "./staticDom";
 
-let dialogInstance =null;
 let homeProject = null;
 let currentProjectToDelete = null;
 let sideDialogListenerInit = false;
 let taskDialogListenerInit = false;
 let taskCardEventListener = false;
-
+let currentProject = null;
+let currentClickListener = null;
+let priorityLevel = "";
 //initialization //has addtask
 const init = function(defaultProject, tasks, addTask){
     const {head, main, tasksDisplay} = staticDom
@@ -30,16 +31,16 @@ const init = function(defaultProject, tasks, addTask){
 }
 const initSideBare = function(projects, removeFunction, tasks, getProject, addtask){
     //append ti body
-    document.body.appendChild(staticDom.side);  
+ 
 
     //singletone instance of project creat dialog
-    dialogInstance = staticDom.dialog_CPD;
-    //document.body.appendChild(dialogInstance);
-
+    const {side, dialog_CPD, input_CPD} = staticDom;
+    document.body.appendChild(side); 
     //init add project button
     staticDom.addProjectBtn.addEventListener("click",()=>{
-        document.body.appendChild(dialogInstance);
-        dialogInstance.showModal();
+        input_CPD.value ="";
+        document.body.appendChild(dialog_CPD);
+        dialog_CPD.showModal();
     });
         staticDom.addProjectBtn.addEventListener("mouseover", () => {
         staticDom.addProjectBtn.style.fontSize = "20px";
@@ -56,17 +57,30 @@ const initSideBare = function(projects, removeFunction, tasks, getProject, addta
 const initDialogP = function(btnFunction){
     //extracting out dialog relevant variables from staticDom
     const{dialog_CPD, input_CPD, button_CPD} = staticDom;
-
+    console.log(`button_cpd = ${button_CPD}`);
+    input_CPD.addEventListener("input",()=>{
+        if (input_CPD.value.trim() === ""){
+            button_CPD.innerHTML = "Cancel";           
+        }else{
+            button_CPD.innerHTML = "Create";
+        }
+    })
     button_CPD.addEventListener("click",()=>{
         const name = input_CPD.value.trim();
         if (name === ""){
-            alert("please enter a project name");
+            dialog_CPD.close();
+            document.body.removeChild(dialog_CPD);        
             return            
+        }else{
+            btnFunction(name);
+            dialog_CPD.close();
+            document.body.removeChild(dialog_CPD);         
         }
-        btnFunction(name);
-        dialog_CPD.close();
-        document.body.removeChild(dialogInstance);        
-        
+    })
+    input_CPD.addEventListener("keydown",(e)=>{
+        if(e.key === "Enter"){
+            button_CPD.click();
+        }
     })
 
 }
@@ -119,8 +133,7 @@ const setupSidedialogListeners = function (removefunction, tasks, addTask){
     sideDialogListenerInit = true;
 }
 
-let currentProject = null;
-let currentClickListener = null;
+
 //has add task
 const projectDialogEventHandler = function(element, project, addTask, tasks){
 
@@ -140,7 +153,7 @@ const projectDialogEventHandler = function(element, project, addTask, tasks){
 }
 //has add task origin 
 
-let priorityLevel = "";
+
 const prioritySelection = function (){
     const {priority, urgent, moderate, nonUrgent} = staticDom;
 
@@ -378,7 +391,6 @@ const renderSide = function(projects, removefunction, tasks, getProjectById, new
 
         });
             
-        
         name.addEventListener("mouseover", () => {
             name.style.fontSize = "20px"
             remove.style.background = urgentRed();

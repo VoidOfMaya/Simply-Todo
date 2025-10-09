@@ -307,7 +307,7 @@ const createProjectDialog = function(){
     projectName.style.marginLeft = "20%";
     
     const btn = document.createElement("div");
-    btn.innerHTML= "Create"
+    btn.innerText="cancel";
     btn.style.backgroundColor = topWhite()
     btn.style.padding= "10px"
     btn.style.borderRadius = "0px 25px 25px 0px"

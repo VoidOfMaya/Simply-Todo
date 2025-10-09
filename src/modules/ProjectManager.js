@@ -41,7 +41,7 @@ class ProjectManager{
         this.data.save("proj", oldArray);
     }
     //delet
-    deletProject(id){
+    deletProject(id, updatetask){
         const projectList = this.data.load("proj");
         if(!projectList.some(p => p.id === id)){
             console.log(`Delet function Error: project not found`)
@@ -50,7 +50,7 @@ class ProjectManager{
         const updatedlist = projectList.filter(project =>project.id !== id);
         this.data.save("proj", updatedlist);
 
-
+        updatetask();
     }    
     showProjects() {
         const projects = this.data.load("proj") || [];
