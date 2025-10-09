@@ -83,12 +83,10 @@ const initDialogP = function(btnFunction){
     button_CPD.addEventListener("click",()=>{
         const name = input_CPD.value.trim();
         if (name === ""){
-            button_CPD.style.background = urgentRed();
             dialog_CPD.close();
             document.body.removeChild(dialog_CPD);        
             return            
         }else{
-            button_CPD.style.background = green();
             btnFunction(name);
             dialog_CPD.close();
             document.body.removeChild(dialog_CPD);         

@@ -1,13 +1,8 @@
 body{
-  fontFamily : "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
+  font-family : "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
   display :grid;
   height :100vh;
   margin :0px;
 }
 
-input[type="text"]:focus,
-textarea:focus {
-  border: none; /* Example: blue border */
-  outline: none; /* Remove default focus outline (optional) */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional glow effect */
-}
+

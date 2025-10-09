@@ -108,7 +108,9 @@ const createSide = function(){
 const createDisplay = function(){
     const display = document.createElement("div");
     const mainContainer = document.createElement("div");
+    const titleContainer = document.createElement('div');
     const displayTitle = document.createElement("div");
+    const editProject = document.createElement('div');
     const tasksDisplay = document.createElement("div");
     const addTaskBtn = document.createElement("div"); 
 
@@ -116,29 +118,45 @@ const createDisplay = function(){
     display.style.backgroundColor = mainWhite();
     display.style.boxShadow = "inset 22px 28px 34px -9px rgba(255, 255, 255, 1)";
     display.style.gridArea = "main";    
+    display.style.display = "grid";
+    display.style.gridTemplateRows = "1fr 9fr";
+    display.style.gridTemplateAreas = `"title-container"
+                                       "main-container"`    
     
+    titleContainer.style.gridArea= "title-container"
+    titleContainer.style.display = "grid";
+    titleContainer.style.gridTemplateColumns = "4fr 1fr";
+    titleContainer.style.gridTemplateRowss = "1fr 1fr";
+    titleContainer.style.gridTemplateAreas = `"project-title edit-project-btn"
+                                              "project-title edit-project-btn"`
+
+
     mainContainer.id = "container";
+    mainContainer.style.gridArea ="main-container"
     mainContainer.style.width = "100%";
     mainContainer.style.height = "100%";
     mainContainer.style.display = "grid";
-    mainContainer.style.gridTemplateRows = "1fr 9fr 1fr "; 
-    mainContainer.style.gridTemplateAreas = `"project-title"
-                                             "task-display"
-                                             "task-btn"` ; 
+    mainContainer.style.gridTemplateRows = " 9fr 1fr "; 
+
+    mainContainer.style.gridTemplateAreas = `"task-display"
+                                             "task-btn "` ; 
    
     displayTitle.style.color = black();
     displayTitle.style.fontSize = "38px";
     displayTitle.style.gridArea = "project-title" ;
-    displayTitle.style.justifySelf = "center";
+    displayTitle.style.marginLeft = "55%";
     displayTitle.style.alignSelf = "center";
+
+
+    editProject.style.gridArea = "edit-project-btn"
 
     tasksDisplay.style.gridArea= "task-display";
     tasksDisplay.style.overflowY = "auto";           
     tasksDisplay.style.maxHeight = "100%";           
-    tasksDisplay.style.display = "flex";             
+    tasksDisplay.style.display = "flex";            
     tasksDisplay.style.flexDirection = "column";     
     tasksDisplay.style.gap = "5px";                  
-    tasksDisplay.style.padding = " px 5px 5px 5px";              
+    tasksDisplay.style.padding = " 5px 5px 5px 5px";              
     tasksDisplay.style.boxSizing = "border-box";
     tasksDisplay.id = "task-display"
 
@@ -153,9 +171,11 @@ const createDisplay = function(){
 
     mainRoot = document.createElement("div");
 
-    mainContainer.appendChild(displayTitle);
+    titleContainer.appendChild(displayTitle);
+    titleContainer.appendChild(editProject);
     mainContainer.appendChild(tasksDisplay); 
-    mainContainer.appendChild(addTaskBtn);   
+    mainContainer.appendChild(addTaskBtn); 
+    display.appendChild(titleContainer);  
     display.appendChild(mainContainer);
     display.appendChild(mainRoot);
 
