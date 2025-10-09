@@ -65,13 +65,30 @@ const initDialogP = function(btnFunction){
             button_CPD.innerHTML = "Create";
         }
     })
+    button_CPD.addEventListener("mouseover", ()=>{
+        button_CPD.style.padding = "11px";
+        button_CPD.style.color = mainWhite()
+        if (input_CPD.value.trim() === ""){
+            button_CPD.style.background = urgentRed();         
+        }else{
+        button_CPD.style.background = green();
+        }
+
+    })
+    button_CPD.addEventListener("mouseout", ()=>{
+        button_CPD.style.padding = "10px";
+        button_CPD.style.color = black()
+        button_CPD.style.background = topWhite();
+    })
     button_CPD.addEventListener("click",()=>{
         const name = input_CPD.value.trim();
         if (name === ""){
+            button_CPD.style.background = urgentRed();
             dialog_CPD.close();
             document.body.removeChild(dialog_CPD);        
             return            
         }else{
+            button_CPD.style.background = green();
             btnFunction(name);
             dialog_CPD.close();
             document.body.removeChild(dialog_CPD);         

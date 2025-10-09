@@ -308,20 +308,10 @@ const createProjectDialog = function(){
     
     const btn = document.createElement("div");
     btn.innerText="cancel";
-    btn.style.backgroundColor = topWhite()
+    btn.style.background = topWhite()
     btn.style.padding= "10px"
     btn.style.borderRadius = "0px 25px 25px 0px"
     btn.style.justifySelf = "center";
-    btn.addEventListener("mouseover", ()=>{
-        btn.style.padding = "11px";
-        btn.style.color = mainWhite()
-        btn.style.backgroundColor = urgentRed;
-    })
-    btn.addEventListener("mouseout", ()=>{
-        btn.style.padding = "10px";
-        btn.style.color = black()
-        btn.style.backgroundColor = topWhite();
-    })
     
     dialog.appendChild(projectName);
     dialog.appendChild(btn)
