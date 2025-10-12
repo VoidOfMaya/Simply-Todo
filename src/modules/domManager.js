@@ -281,6 +281,7 @@ const populateTasks = function (projectId, tasks){
         const clonePriority = cardClone.querySelector("#priority");
         const cloneOpen = cardClone.querySelector("#open");
         const cloneEdit = cardClone.querySelector('#edit');
+        const cloneDelet = cardClone.querySelector('#delet');
 
         cloneName.innerText = task.name;
         cloneInfo.innerText ="";
@@ -330,12 +331,21 @@ const populateTasks = function (projectId, tasks){
             cloneEdit.style.background = topWhite();
             cloneEdit.style.color = mainWhite();        
         })
+        cloneDelet.addEventListener('mouseover',()=>{
+            cloneDelet.style.background = urgentRed();
+            cloneDelet.style.color = mainWhite();
+
+        })
+        cloneDelet.addEventListener('mouseout',()=>{
+            cloneDelet.style.background = topWhite();
+            cloneDelet.style.color = mainWhite();        
+        })
         //on click
         cloneOpen.addEventListener('click',()=>{
             if (!isExpanded){
                 console.log(isExpanded);
                 cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
-                cardClone.style.gridTemplateRows = "1fr 2fr";
+                cardClone.style.gridTemplateRows = "1fr 1fr 1fr";
                 
                 cloneInfo.innerText = task.info;
                 cloneInfo.style.padding = "0px 10px"
@@ -345,8 +355,17 @@ const populateTasks = function (projectId, tasks){
                 cloneEdit.style.fontSize = "20px";
                 cloneEdit.style.alignContent = 'center';
                 cloneEdit.style.textAlign = 'center';
+                
+
+                cloneDelet.innerHTML = "delet";
+                cloneDelet.style.color = mainWhite();
+                cloneDelet.style.fontSize = "20px";
+                cloneDelet.style.alignContent = 'center';
+                cloneDelet.style.textAlign = 'center';
+
                 cardClone.style.gridTemplateAreas = `"priority name date open"
-                                                     "priority info edit open"`
+                                                     "priority name edit open"
+                                                     "priority info delet open"`
 
                 isExpanded = true;
             }else{
@@ -356,6 +375,7 @@ const populateTasks = function (projectId, tasks){
                 cloneInfo.innerText = "";
                 cloneInfo.style.padding = '0px';
                 cloneEdit.innerHTML ='';
+                cloneDelet.innerHTML = '';
                 isExpanded =false;
             }
         })

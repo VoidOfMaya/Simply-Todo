@@ -247,6 +247,7 @@ const createTaskCard = function (){
     const taskDate = document.createElement('div');
     const taskOpen = document.createElement('div');
     const taskEdit = document.createElement('div');
+    const taskDelet = document.createElement('div');
 
     taskPriority.id = "priority";
     taskName.id = "name";
@@ -254,7 +255,7 @@ const createTaskCard = function (){
     taskInfo.id = "info";
     taskOpen.id = "open";
     taskEdit.id = "edit";
-
+    taskDelet.id = "delet";
     card.style.gridArea = "task-Card";
     card.style.margin = "0px 50px";
     card.style.background = topWhite();
@@ -287,8 +288,14 @@ const createTaskCard = function (){
     taskEdit.style.background = topWhite();
     taskEdit.style.color = mainWhite();
     taskEdit.style.fontSize = "20px"
-    taskEdit.style.margin = "20px 0px 20px 0px";
-    taskEdit.style.borderRadius ="20px 0px 0px 20px";
+    //taskEdit.style.margin = "20px 0px 20px 0px";
+    //taskEdit.style.borderRadius ="20px 0px 0px 20px";
+
+    taskDelet.style.background = topWhite();
+    taskDelet.style.color = mainWhite();
+    taskDelet.style.fontSize = "20px"
+    //taskDelet.style.margin = "20px 0px 20px 0px";
+    //taskDelet.style.borderRadius ="20px 0px 0px 20px";
 
     taskPriority.style.gridArea = "priority";
     taskName.style.gridArea = "name";
@@ -304,6 +311,7 @@ const createTaskCard = function (){
     card.appendChild(taskDate)
     card.appendChild(taskOpen);
     card.appendChild(taskEdit);
+    card.appendChild(taskDelet);
     
  return {taskCard : card, taskInfo, taskName, taskPriority, taskDate, taskOpen, taskEdit}
 }
