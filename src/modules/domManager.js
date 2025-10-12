@@ -8,9 +8,10 @@ let taskDialogListenerInit = false;
 let taskCardEventListener = false;
 let currentProject = null;
 let currentClickListener = null;
+let editProjectListener = false;
 let priorityLevel = "";
 //initialization //has addtask
-const init = function(defaultProject, tasks, addTask){
+const init = function(defaultProject, tasks, addTask, addProj){
     const {head, main, tasksDisplay} = staticDom
     const body = document.querySelector("body");
     body.style.fontFamily = "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
@@ -23,13 +24,13 @@ const init = function(defaultProject, tasks, addTask){
     "side main"
     ` 
     console.log(`init  function : default project- ${defaultProject.name}`)
-    populateMain(defaultProject, tasks, addTask);
+    populateMain(defaultProject, tasks, addTask, addProj);
     body.appendChild(head);
     body.appendChild(main);
     return body;   
 
 }
-const initSideBare = function(projects, removeFunction, tasks, getProject, addtask){
+const initSideBare = function(projects, removeFunction, tasks, getProject, addtask, editProj){
     //append ti body
  
 
@@ -52,7 +53,7 @@ const initSideBare = function(projects, removeFunction, tasks, getProject, addta
         staticDom.addProjectBtn.style.fontSize = "18px";
         staticDom.addProjectBtn.style.backgroundColor = black();
     });
-    renderSide(projects, removeFunction, tasks, getProject, addtask);
+    renderSide(projects, removeFunction, tasks, getProject, addtask, editProj);
 }
 const initDialogP = function(btnFunction){
     //extracting out dialog relevant variables from staticDom
@@ -99,8 +100,10 @@ const initDialogP = function(btnFunction){
     })
 
 }
+
+
 //Dialog eventlistener inatance manager // has add task
-const setupSidedialogListeners = function (removefunction, tasks, addTask){
+const setupSidedialogListeners = function (removefunction, tasks, addTask, editProj){
     const { dialog_dPD, delete_dBD, cancel_dBD } = staticDom;
     if(sideDialogListenerInit) return
     // cancell event handling    
@@ -140,7 +143,7 @@ const setupSidedialogListeners = function (removefunction, tasks, addTask){
         if (document.body.contains(dialog_dPD)) {
             document.body.removeChild(dialog_dPD);
         }
-        populateMain(homeProject, tasks, addTask);
+        populateMain(homeProject, tasks, addTask, editProj);
         console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
         currentProjectToDelete = null;
 
@@ -167,6 +170,8 @@ const projectDialogEventHandler = function(element, project, addTask, tasks){
     return element;
 }
 //has add task origin 
+
+
 
 
 const prioritySelection = function (){
@@ -227,13 +232,15 @@ const taskCreation = function( addTask, tasks){
 }
 //display management takes: 1project , gettask function instance, create task function for triggering dialog
 //has add task
-const populateMain= function(project, tasks, addTask){
-    const {displayTitle, addTaskBtn} = staticDom
+const populateMain= function(project, tasks, addTask, editproj){
+    const {displayTitle, addTaskBtn, editProject} = staticDom
+    const {editProjDialog, edipprojectName, editBtn } = staticDom;
     console.log("project in populateMain:", project);
     console.log(`populating ${project.name} initializing at id ${project.id}`);
     //for intialization
     console.log(tasks(project.id));
     projectDialogEventHandler( addTaskBtn, project, addTask, tasks);
+ 
     //taskbtnlistenerInstance = true;
     displayTitle.innerHTML = "";          
     displayTitle.innerText= project.name;
@@ -246,6 +253,13 @@ const populateMain= function(project, tasks, addTask){
     addTaskBtn.addEventListener('mouseout',()=>{
         addTaskBtn.style.color = topWhite();
         addTaskBtn.style.background = mainWhite();
+    });
+
+    editProject.addEventListener("mouseover",()=>{
+        editProject.style.color = black();
+    });
+    editProject.addEventListener("mouseout",()=>{
+        editProject.style.color = topWhite();
     });
     
     //task display  
@@ -354,12 +368,12 @@ const populateTasks = function (projectId, tasks){
 
 }
  //has add task   
-const renderSide = function(projects, removefunction, tasks, getProjectById, newTask){
+const renderSide = function(projects, removefunction, tasks, getProjectById, newTask, editProj){
     const root = staticDom.sideRoot;
     const { dialog_dPD, alert_dBD } = staticDom;
     root.innerHTML = "";
 
-    setupSidedialogListeners(removefunction, tasks, newTask);
+    setupSidedialogListeners(removefunction, tasks, newTask, editProj);
     homeProject = projects.find(p => p.name === "home");
 
     projects.forEach((project) => {
@@ -402,7 +416,7 @@ const renderSide = function(projects, removefunction, tasks, getProjectById, new
                 return
                 
             }
-            populateMain(freshProject, tasks, newTask,);
+            populateMain(freshProject, tasks, newTask, editProj);
 
         });
             

@@ -149,6 +149,11 @@ const createDisplay = function(){
 
 
     editProject.style.gridArea = "edit-project-btn"
+    editProject.innerHTML = "edit";
+    editProject.style.color= topWhite();
+    editProject.style.alignContent = "center";
+    editProject.textAlign = "center";
+    editProject.style.fontSize = "24px";
 
     tasksDisplay.style.gridArea= "task-display";
     tasksDisplay.style.overflowY = "auto";           
@@ -179,7 +184,7 @@ const createDisplay = function(){
     display.appendChild(mainContainer);
     display.appendChild(mainRoot);
 
-    return {display, mainContainer, displayTitle , tasksDisplay, addTaskBtn};
+    return {display, mainContainer, displayTitle , tasksDisplay, addTaskBtn, editProject};
 }
 const deleteProjectDialog = function(deleteFunction, id){
 
@@ -464,7 +469,7 @@ const createTaskDialog = function(){
 const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
 const {side, projectList, addProject} = createSide();
-const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn} = createDisplay()
+const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn, editProject} = createDisplay()
 const {taskCard, taskInfo, taskName, taskPriority, taskDate, taskOpen, taskEdit} = createTaskCard();
 const {taskDialog, name, info, date, createBtn, cancelBtn: cancel_cTD, priority, urgent, moderate, nonUrgent} = createTaskDialog();
 // _CPD is a pointer to the original function 
@@ -472,7 +477,7 @@ export const staticDom= {
      //header
     head : createHeader(),
     //main project display
-    main : display, mainContainer, displayTitle, tasksDisplay, addTaskBtn,
+    main : display, mainContainer, displayTitle, tasksDisplay, addTaskBtn, editProject,
     //sidebar
     side, sideRoot: projectList, addProjectBtn: addProject,
     //create project dialog
