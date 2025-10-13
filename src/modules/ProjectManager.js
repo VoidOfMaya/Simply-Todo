@@ -36,9 +36,14 @@ class ProjectManager{
     updateProject(id, newName){
         const oldArray = this.data.load("proj");
         console.log(`runing the  update project method`);
-        oldArray[id].name = newName;
-        //console.log(oldArray[id]);
-        this.data.save("proj", oldArray);
+        const project = oldArray.find(proj => proj.id ===id)
+        if(project){
+            project.name = newName;
+            this.data.save("proj", oldArray);            
+        }else{
+            console.error(`project with id ${id} not found`)
+        }
+
     }
     //delet
     deletProject(id, updatetask){
