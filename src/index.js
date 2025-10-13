@@ -56,20 +56,20 @@ console.log(maxId)
 Project.setStartingId(maxId + 1);
 
 function initApp(){
-  init(projectHandler.getProject(3), tasksGet,taskCreate, projectUpdate); //has task
-  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate); //has task
+  init(projectHandler.getProject(3), tasksGet,taskCreate, projectUpdate, taskDelet); //has task
+  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate, taskDelet); //has task
   initDialogP(projectAdd);
 
   
  
   staticDom.dialog_CPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate);//hastask
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate, taskDelet);//hastask
   }) 
   staticDom.dialog_dPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate);//has task
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate, taskDelet);//has task
   })
   staticDom.editDialog.addEventListener('close',()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate);//has task
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate, taskDelet);//has task
   })
 }
 

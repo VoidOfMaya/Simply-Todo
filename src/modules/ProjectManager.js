@@ -23,7 +23,7 @@ class ProjectManager{
     //read
     getProject(id){
         const projectList = this.data.load("proj");
-        const returnedProject = projectList.find(p =>p.id === id)
+        const returnedProject = projectList.find(p =>String(p.id) === String(id))
 
         if(!returnedProject){
             console.log(`project at id: ${id}, doesnt exist`);

@@ -12,7 +12,7 @@ let currentEditDialog = false;
 let previousEditProjectListener = undefined;
 let priorityLevel = "";
 //initialization //has addtask
-const init = function(defaultProject, tasks, addTask, editProj){
+const init = function(defaultProject, tasks, addTask, editProj, deleteTask){
     const {head, main, tasksDisplay} = staticDom
     const body = document.querySelector("body");
     body.style.fontFamily = "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
@@ -25,13 +25,13 @@ const init = function(defaultProject, tasks, addTask, editProj){
     "side main"
     ` 
     console.log(`init  function : default project- ${defaultProject.name}`)
-    populateMain(defaultProject, tasks, addTask, editProj);
+    populateMain(defaultProject, tasks, addTask, editProj, deleteTask);
     body.appendChild(head);
     body.appendChild(main);
     return body;   
 
 }
-const initSideBare = function(projects, removeFunction, tasks, getProject, addtask, editProj){
+const initSideBare = function(projects, removeFunction, tasks, getProject, addtask, editProj, deleteTask){
     //append ti body
  
 
@@ -54,7 +54,7 @@ const initSideBare = function(projects, removeFunction, tasks, getProject, addta
         staticDom.addProjectBtn.style.fontSize = "18px";
         staticDom.addProjectBtn.style.backgroundColor = black();
     });
-    renderSide(projects, removeFunction, tasks, getProject, addtask, editProj);
+    renderSide(projects, removeFunction, tasks, getProject, addtask, editProj, deleteTask);
 }
 const initDialogP = function(btnFunction){
     //extracting out dialog relevant variables from staticDom
@@ -160,7 +160,7 @@ const editDialogP = function(btnFunction, id){
 }
 */
 //Dialog eventlistener inatance manager // has add task
-const setupSidedialogListeners = function (removefunction, tasks, addTask, editProj){
+const setupSidedialogListeners = function (removefunction, tasks, addTask, editProj, deleteTask){
     const { dialog_dPD, delete_dBD, cancel_dBD } = staticDom;
     if(sideDialogListenerInit) return
     // cancell event handling    
@@ -200,7 +200,7 @@ const setupSidedialogListeners = function (removefunction, tasks, addTask, editP
         if (document.body.contains(dialog_dPD)) {
             document.body.removeChild(dialog_dPD);
         }
-        populateMain(homeProject, tasks, addTask, editProj);
+        populateMain(homeProject, tasks, addTask, editProj, deleteTask);
         console.log(`project "${project.name}" at id "${project.id}" should be deleted`)
         currentProjectToDelete = null;
 
@@ -209,7 +209,7 @@ const setupSidedialogListeners = function (removefunction, tasks, addTask, editP
 }
 
 //has add task
-const projectDialogEventHandler = function(element, project, addTask, tasks){
+const projectDialogEventHandler = function(element, project, addTask, tasks, deleteTask){
 
     if(currentProject === project.id) return;
     if(currentClickListener){
@@ -217,7 +217,7 @@ const projectDialogEventHandler = function(element, project, addTask, tasks){
     }
     
     currentClickListener = () => {
-        taskCreation(addTask, tasks);
+        taskCreation(addTask, tasks, deleteTask);
     };
     element.addEventListener('click', currentClickListener);
     
@@ -249,7 +249,7 @@ const prioritySelection = function (){
 
     }
 let createTaskDialogListenerInstance = false;
-const taskCreation = function( addTask, tasks){
+const taskCreation = function( addTask, tasks, deleteTask){
     const {taskDialog, name, info, date, createBtn, cancel_cTD} = staticDom;
     let projectId;
     //console.log(`loading tasks under project id: ${projectId}`);
@@ -275,7 +275,7 @@ const taskCreation = function( addTask, tasks){
         taskDialog.addEventListener('close', ()=>{
             projectId = currentProject;
             console.log( tasks);
-            populateTasks(projectId, tasks)
+            populateTasks(projectId, tasks,deleteTask, addTask)
         })
         createTaskDialogListenerInstance = true;
         prioritySelection();
@@ -286,7 +286,7 @@ const taskCreation = function( addTask, tasks){
 //display management takes: 1project , gettask function instance, create task function for triggering dialog
 //has add task
 
-const populateMain= function(project, tasks, addTask, editProj){
+const populateMain= function(project, tasks, addTask, editProj,deleteTask){
     const {displayTitle, addTaskBtn} = staticDom;
 
     console.log("project in populateMain:", project);
@@ -298,11 +298,11 @@ const populateMain= function(project, tasks, addTask, editProj){
         editProject.removeEventListener('click', previousEditProjectListener);
     }
     console.log(tasks(project.id));
-    projectDialogEventHandler( addTaskBtn, project, addTask, tasks);
+    projectDialogEventHandler( addTaskBtn, project, addTask, tasks, deleteTask);
  
     displayTitle.innerHTML = "";          
     displayTitle.innerText= project.name;
-    populateTasks(project.id, tasks);
+    populateTasks(project.id, tasks, deleteTask, addTask);
 
     addTaskBtn.addEventListener('mouseover',()=>{
         addTaskBtn.style.color = black();
@@ -316,7 +316,7 @@ const populateMain= function(project, tasks, addTask, editProj){
     //task display  
     console.log(`populate ${project.name} finished`);  
 }
-const populateTasks = function (projectId, tasks){
+const populateTasks = function (projectId, tasks, deleteTask, addTask, editProj){
     const {taskCard, tasksDisplay} = staticDom;
     tasksDisplay.innerHTML = ""
     
@@ -325,13 +325,14 @@ const populateTasks = function (projectId, tasks){
         //cloning card from original
         const cardClone = taskCard.cloneNode(true)
         let isExpanded = false;
+        let detectProjDelete = false;
 
         const cloneName = cardClone.querySelector("#name");
         const cloneInfo  = cardClone.querySelector("#info");
         const cloneDate  = cardClone.querySelector("#date");
         const clonePriority = cardClone.querySelector("#priority");
         const cloneOpen = cardClone.querySelector("#open");
-        const cloneEdit = cardClone.querySelector('#edit');
+        //const cloneEdit = cardClone.querySelector('#edit');
         const cloneDelet = cardClone.querySelector('#delet');
 
         cloneName.innerText = task.name;
@@ -373,6 +374,7 @@ const populateTasks = function (projectId, tasks){
             cardClone.style.gridTemplateColumns ="10px 7fr 2fr 10px ";
             cloneOpen.innerHTML = "";
         })
+        /*
         cloneEdit.addEventListener('mouseover',()=>{
             cloneEdit.style.background = moderateYellow();
             cloneEdit.style.color = mainWhite();
@@ -381,7 +383,7 @@ const populateTasks = function (projectId, tasks){
         cloneEdit.addEventListener('mouseout',()=>{
             cloneEdit.style.background = topWhite();
             cloneEdit.style.color = mainWhite();        
-        })
+        })*/
         cloneDelet.addEventListener('mouseover',()=>{
             cloneDelet.style.background = urgentRed();
             cloneDelet.style.color = mainWhite();
@@ -401,11 +403,11 @@ const populateTasks = function (projectId, tasks){
                 cloneInfo.innerText = task.info;
                 cloneInfo.style.padding = "0px 10px"
 
-                cloneEdit.innerHTML = "edit";
-                cloneEdit.style.color = mainWhite();
-                cloneEdit.style.fontSize = "20px";
-                cloneEdit.style.alignContent = 'center';
-                cloneEdit.style.textAlign = 'center';
+                //cloneEdit.innerHTML = "edit";
+                //cloneEdit.style.color = mainWhite();
+                //cloneEdit.style.fontSize = "20px";
+                //cloneEdit.style.alignContent = 'center';
+                //cloneEdit.style.textAlign = 'center';
                 
 
                 cloneDelet.innerHTML = "delet";
@@ -415,7 +417,7 @@ const populateTasks = function (projectId, tasks){
                 cloneDelet.style.textAlign = 'center';
 
                 cardClone.style.gridTemplateAreas = `"priority name date open"
-                                                     "priority name edit open"
+                                                     "priority name delet open"
                                                      "priority info delet open"`
 
                 isExpanded = true;
@@ -425,12 +427,24 @@ const populateTasks = function (projectId, tasks){
                 cardClone.style.gridTemplateAreas = `"priority name date open"`;
                 cloneInfo.innerText = "";
                 cloneInfo.style.padding = '0px';
-                cloneEdit.innerHTML ='';
+                //cloneEdit.innerHTML ='';
                 cloneDelet.innerHTML = '';
                 isExpanded =false;
             }
         })
-
+        cloneDelet.addEventListener('click', ()=>{
+            console.log(`task for deletion ${task.name} at id${task.id}`);
+            deleteTask(task.id);
+            detectProjDelete = true;
+            renderAfterDelet();
+            
+        })
+        const renderAfterDelet = ()=>{
+            if(detectProjDelete){
+                populateTasks(projectId, tasks, deleteTask, addTask, editProj);
+                detectProjDelete = false;
+            }
+        }
         tasksDisplay.style.padding = "0px 10px";
         tasksDisplay.style.gap = "15px";
         tasksDisplay.appendChild(cardClone);
@@ -439,12 +453,12 @@ const populateTasks = function (projectId, tasks){
 
 }
  //has add task   
-const renderSide = function(projects, removefunction, tasks, getProjectById, newTask, editProj){
+const renderSide = function(projects, removefunction, tasks, getProjectById, newTask, editProj, deleteTask){
     const root = staticDom.sideRoot;
     const { dialog_dPD, alert_dBD, editProject } = staticDom;
     root.innerHTML = "";
 
-    setupSidedialogListeners(removefunction, tasks, newTask, editProj);
+    setupSidedialogListeners(removefunction, tasks, newTask, editProj, deleteTask);
     homeProject = projects.find(p => p.name === "home");
 
     projects.forEach((project) => {
@@ -490,7 +504,7 @@ const renderSide = function(projects, removefunction, tasks, getProjectById, new
             if(currentEditDialog){
                 currentEditDialog = false;
             }
-            populateMain(freshProject, tasks, newTask, editProj);
+            populateMain(freshProject, tasks, newTask, editProj, deleteTask);
 
         });
             
