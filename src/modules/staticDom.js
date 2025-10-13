@@ -110,7 +110,7 @@ const createDisplay = function(){
     const mainContainer = document.createElement("div");
     const titleContainer = document.createElement('div');
     const displayTitle = document.createElement("div");
-    const editProject = document.createElement('div');
+    //const deleteProjectBtn = document.createElement('div');
     const tasksDisplay = document.createElement("div");
     const addTaskBtn = document.createElement("div"); 
 
@@ -147,14 +147,16 @@ const createDisplay = function(){
     displayTitle.style.marginLeft = "55%";
     displayTitle.style.alignSelf = "center";
 
-
-    editProject.style.gridArea = "edit-project-btn"
-    editProject.innerHTML = "edit";
-    editProject.style.color= topWhite();
-    editProject.style.alignContent = "center";
-    editProject.textAlign = "center";
-    editProject.style.fontSize = "24px";
-
+    /*
+    deleteProjectBtn.style.gridArea = "edit-project-btn"
+    deleteProjectBtn.innerHTML = "Delet";
+    deleteProjectBtn.style.color= topWhite();
+    deleteProjectBtn.style.background= mainWhite();
+    deleteProjectBtn.style.alignContent = "center";
+    deleteProjectBtn.style.textAlign = "center";
+    deleteProjectBtn.style.fontSize = "24px";
+    deleteProjectBtn.style.margin = "20px 0px 20px 0px"
+*/
     tasksDisplay.style.gridArea= "task-display";
     tasksDisplay.style.overflowY = "auto";           
     tasksDisplay.style.maxHeight = "100%";           
@@ -177,14 +179,14 @@ const createDisplay = function(){
     mainRoot = document.createElement("div");
 
     titleContainer.appendChild(displayTitle);
-    titleContainer.appendChild(editProject);
+   //titleContainer.appendChild(deleteProjectBtn);
     mainContainer.appendChild(tasksDisplay); 
     mainContainer.appendChild(addTaskBtn); 
     display.appendChild(titleContainer);  
     display.appendChild(mainContainer);
     display.appendChild(mainRoot);
 
-    return {display, mainContainer, displayTitle , tasksDisplay, addTaskBtn, editProject};
+    return {display, mainContainer, displayTitle , tasksDisplay, addTaskBtn, };
 }
 const deleteProjectDialog = function(deleteFunction, id){
 
@@ -238,6 +240,7 @@ const deleteProjectDialog = function(deleteFunction, id){
 
 
 }
+
 // task input format: title, info, priority, date, projectId`)
 const createTaskCard = function (){
     const card = document.createElement('div');
@@ -315,7 +318,6 @@ const createTaskCard = function (){
     
  return {taskCard : card, taskInfo, taskName, taskPriority, taskDate, taskOpen, taskEdit}
 }
-
 const createProjectDialog = function(){
     const dialog = document.createElement("dialog");
     dialog.style.width = "25vw";
@@ -351,6 +353,40 @@ const createProjectDialog = function(){
     
 
     return {dialog, projectName, btn};
+}
+const editProjectDialog = function(){
+    const editDialog = document.createElement("dialog");
+    editDialog.style.width = "25vw";
+    editDialog.style.border = "none";
+    editDialog.style.borderRadius = "40px";
+    editDialog.style.backgroundColor = mainWhite()
+    editDialog.style.display = "grid";
+    editDialog.style.gridTemplate = "1fr /2fr 1fr";
+    editDialog.style.alignItems = "center";
+    editDialog.style.justifyContent = "center";
+    
+    
+    const editProjectName = document.createElement("input");
+    editProjectName.type = "text";
+    editProjectName.placeholder= "Project name :";
+    editProjectName.style.width = "90%";
+    editProjectName.style.justifySelf= "center";
+    editProjectName.style.border = "none";
+    editProjectName.style.outline = "none";
+    editProjectName.style.padding = "10px";
+    editProjectName.style.borderRadius ="25px 0px 0px 25px";
+    editProjectName.style.marginLeft = "20%";
+    
+    const editBtn = document.createElement("div");
+    editBtn.innerText="cancel";
+    editBtn.style.background = topWhite()
+    editBtn.style.padding= "10px"
+    editBtn.style.borderRadius = "0px 25px 25px 0px"
+    editBtn.style.justifySelf = "center";
+    
+    editDialog.appendChild(editProjectName);
+    editDialog.appendChild(editBtn);
+    return{editDialog, editProjectName, editBtn};
 }
 const createTaskDialog = function(){
     // required inputs name, info, date, priority, projID
@@ -476,8 +512,9 @@ const createTaskDialog = function(){
 //spliting finctions to variables while calling the function once
 const { deleteDialog, deletBtn, cancelBtn, alert} = deleteProjectDialog();
 const { dialog, projectName, btn } = createProjectDialog();
+const { editDialog, editProjectName, editBtn } = editProjectDialog();
 const {side, projectList, addProject} = createSide();
-const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn, editProject} = createDisplay()
+const {display, mainContainer, displayTitle, tasksDisplay, addTaskBtn, } = createDisplay()
 const {taskCard, taskInfo, taskName, taskPriority, taskDate, taskOpen, taskEdit} = createTaskCard();
 const {taskDialog, name, info, date, createBtn, cancelBtn: cancel_cTD, priority, urgent, moderate, nonUrgent} = createTaskDialog();
 // _CPD is a pointer to the original function 
@@ -485,13 +522,15 @@ export const staticDom= {
      //header
     head : createHeader(),
     //main project display
-    main : display, mainContainer, displayTitle, tasksDisplay, addTaskBtn, editProject,
+    main : display, mainContainer, displayTitle, tasksDisplay, addTaskBtn,
     //sidebar
     side, sideRoot: projectList, addProjectBtn: addProject,
     //create project dialog
     dialog_CPD : dialog, input_CPD  : projectName, button_CPD : btn,
     //delete project dialog
     dialog_dPD : deleteDialog, delete_dBD : deletBtn, cancel_dBD : cancelBtn, alert_dBD  : alert, 
+    //editprojectd dialog
+    editDialog, editProjectName, editBtn,
     //task card
     taskCard, taskInfo, taskName, taskPriority, taskDate , taskOpen, taskEdit,
     //task dialog

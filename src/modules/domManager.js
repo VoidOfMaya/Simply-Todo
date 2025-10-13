@@ -8,10 +8,11 @@ let taskDialogListenerInit = false;
 let taskCardEventListener = false;
 let currentProject = null;
 let currentClickListener = null;
-let editProjectListener = false;
+let currentEditDialog = false;
+let previousEditProjectListener = undefined;
 let priorityLevel = "";
 //initialization //has addtask
-const init = function(defaultProject, tasks, addTask, addProj){
+const init = function(defaultProject, tasks, addTask, editProj){
     const {head, main, tasksDisplay} = staticDom
     const body = document.querySelector("body");
     body.style.fontFamily = "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif";
@@ -24,7 +25,7 @@ const init = function(defaultProject, tasks, addTask, addProj){
     "side main"
     ` 
     console.log(`init  function : default project- ${defaultProject.name}`)
-    populateMain(defaultProject, tasks, addTask, addProj);
+    populateMain(defaultProject, tasks, addTask, editProj);
     body.appendChild(head);
     body.appendChild(main);
     return body;   
@@ -100,8 +101,64 @@ const initDialogP = function(btnFunction){
     })
 
 }
+/*
+const editDialogP = function(btnFunction, id){
+     //extracting out dialog relevant variables from staticDom
+    const{editDialog, editProjectName, editBtn} = staticDom;
+    console.log(`updating at id ${id} , internal editProjectP `)
+    if(!document.body.contains(editDialog)){
+        document.body.appendChild(editDialog);
+        editDialog.showModal();
+    }
+    
+    editProjectName.addEventListener("input",()=>{
+        if (editProjectName.value.trim() === ""){
+            editBtn.innerHTML = "Cancel";           
+        }else{
+            editBtn.innerHTML = "update";
+        }
+    })
+    editBtn.addEventListener("mouseover", ()=>{
+        editBtn.style.padding = "11px";
+        editBtn.style.color = mainWhite()
+        if (editProjectName.value.trim() === ""){
+            editBtn.style.background = urgentRed();         
+        }else{
+        editBtn.style.background = green();
+        }
+
+    })
+    editBtn.addEventListener("mouseout", ()=>{
+        editBtn.style.padding = "10px";
+        editBtn.style.color = black()
+        editBtn.style.background = topWhite();
+    })
+    editBtn.addEventListener("click",()=>{
 
 
+        const name = editProjectName.value.trim();
+        if (name === ""){
+            editDialog.close();
+            if(document.body.contains(editDialog)){
+                document.body.removeChild(editDialog);
+            }      
+            return            
+        }else{
+            //console.log(`changing project name to ${name} at unique id`);
+            btnFunction(id, name);
+            editDialog.close();
+            if(document.body.contains(editDialog)){
+                document.body.removeChild(editDialog); 
+            }        
+        }
+    })
+    editProjectName.addEventListener("keydown",(e)=>{
+        if(e.key === "Enter"){
+            editBtn.click();
+        }
+    })
+}
+*/
 //Dialog eventlistener inatance manager // has add task
 const setupSidedialogListeners = function (removefunction, tasks, addTask, editProj){
     const { dialog_dPD, delete_dBD, cancel_dBD } = staticDom;
@@ -151,7 +208,6 @@ const setupSidedialogListeners = function (removefunction, tasks, addTask, editP
     sideDialogListenerInit = true;
 }
 
-
 //has add task
 const projectDialogEventHandler = function(element, project, addTask, tasks){
 
@@ -170,9 +226,6 @@ const projectDialogEventHandler = function(element, project, addTask, tasks){
     return element;
 }
 //has add task origin 
-
-
-
 
 const prioritySelection = function (){
     const {priority, urgent, moderate, nonUrgent} = staticDom;
@@ -232,16 +285,21 @@ const taskCreation = function( addTask, tasks){
 }
 //display management takes: 1project , gettask function instance, create task function for triggering dialog
 //has add task
-const populateMain= function(project, tasks, addTask, editproj){
-    const {displayTitle, addTaskBtn, editProject} = staticDom
-    const {editProjDialog, edipprojectName, editBtn } = staticDom;
+
+const populateMain= function(project, tasks, addTask, editProj){
+    const {displayTitle, addTaskBtn} = staticDom;
+
     console.log("project in populateMain:", project);
     console.log(`populating ${project.name} initializing at id ${project.id}`);
     //for intialization
+    console.log(`previousevent listener = ${typeof previousEditProjectListener}`)
+
+    if(typeof previousEditProjectListener ==="function"){
+        editProject.removeEventListener('click', previousEditProjectListener);
+    }
     console.log(tasks(project.id));
     projectDialogEventHandler( addTaskBtn, project, addTask, tasks);
  
-    //taskbtnlistenerInstance = true;
     displayTitle.innerHTML = "";          
     displayTitle.innerText= project.name;
     populateTasks(project.id, tasks);
@@ -253,13 +311,6 @@ const populateMain= function(project, tasks, addTask, editproj){
     addTaskBtn.addEventListener('mouseout',()=>{
         addTaskBtn.style.color = topWhite();
         addTaskBtn.style.background = mainWhite();
-    });
-
-    editProject.addEventListener("mouseover",()=>{
-        editProject.style.color = black();
-    });
-    editProject.addEventListener("mouseout",()=>{
-        editProject.style.color = topWhite();
     });
     
     //task display  
@@ -390,7 +441,7 @@ const populateTasks = function (projectId, tasks){
  //has add task   
 const renderSide = function(projects, removefunction, tasks, getProjectById, newTask, editProj){
     const root = staticDom.sideRoot;
-    const { dialog_dPD, alert_dBD } = staticDom;
+    const { dialog_dPD, alert_dBD, editProject } = staticDom;
     root.innerHTML = "";
 
     setupSidedialogListeners(removefunction, tasks, newTask, editProj);
@@ -435,6 +486,9 @@ const renderSide = function(projects, removefunction, tasks, getProjectById, new
                 alert("selected project no longer exists."); 
                 return
                 
+            }
+            if(currentEditDialog){
+                currentEditDialog = false;
             }
             populateMain(freshProject, tasks, newTask, editProj);
 

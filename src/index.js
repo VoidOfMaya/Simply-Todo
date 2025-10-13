@@ -2,7 +2,7 @@
 import "./styles.css";
 import { ProjectManager } from "./modules/ProjectManager";
 import { TaskManager } from "./modules/TaskManager"; 
-import { init, initDialogP, initSideBare , renderSide, } from "./modules/domManager";
+import { init, initDialogP, editDialogP, initSideBare , renderSide, } from "./modules/domManager";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { staticDom } from "./modules/staticDom";
 import { Project } from "./modules/Project";
@@ -56,15 +56,20 @@ console.log(maxId)
 Project.setStartingId(maxId + 1);
 
 function initApp(){
-  init(projectHandler.getProject(3), tasksGet,taskCreate,); //has task
-  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate); //has task
+  init(projectHandler.getProject(3), tasksGet,taskCreate, projectUpdate); //has task
+  initSideBare(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate); //has task
   initDialogP(projectAdd);
+
+  
  
   staticDom.dialog_CPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate);//hastask
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate);//hastask
   }) 
   staticDom.dialog_dPD.addEventListener('close', ()=>{
-    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate);//has task
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate);//has task
+  })
+  staticDom.editDialog.addEventListener('close',()=>{
+    renderSide(projectHandler.showProjects(), projectDelete, tasksGet, projectGet, taskCreate, projectUpdate);//has task
   })
 }
 
